@@ -401,6 +401,7 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this,MainActivity.class);
                 startActivity(intent);
+                finish();
                 mDrawerLayout.closeDrawer(GravityCompat.START,true);
             }
         });
