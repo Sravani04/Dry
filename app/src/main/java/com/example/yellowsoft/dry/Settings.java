@@ -11,7 +11,7 @@ import java.io.Serializable;
  */
 
 public class Settings implements Serializable{
-    public String logo,title,title_ar,email,about,about_ar,contact,contact_ar;
+    public String logo,title,title_ar,email,about,about_ar,contact,contact_ar,terms,terms_ar;
     public Settings(JsonObject jsonObject, Context context){
         logo = jsonObject.get("logo").getAsString();
         title = jsonObject.get("title").getAsString();
@@ -21,10 +21,13 @@ public class Settings implements Serializable{
         about_ar = jsonObject.get("about_ar").getAsString();
         contact = jsonObject.get("contact").getAsString();
         contact_ar = jsonObject.get("contact_ar").getAsString();
+        terms = jsonObject.get("terms").getAsString();
+        terms_ar = jsonObject.get("terms_ar").getAsString();
         if (Session.GetLang(context).equals("ar")) {
             title = title_ar;
             about = about_ar;
             contact = contact_ar;
+            terms = terms_ar;
         }
     }
 }

@@ -1,6 +1,7 @@
 package com.example.yellowsoft.dry;
 
 import android.app.Dialog;
+import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -79,6 +80,8 @@ public class MainActivity extends AppCompatActivity {
     LinearLayout popup_view;
     ArrayList<Services> servicesfrom_api;
     String lang;
+    String term_en,term_ar;
+
 
 
 
@@ -351,6 +354,13 @@ public class MainActivity extends AppCompatActivity {
                     finish();
                 } else {
                     Intent intent = new Intent(MainActivity.this, BookAppointmentActivity.class);
+                    intent.putExtra("terms",term_en);
+                    intent.putExtra("terms_ar",term_ar);
+                    try {
+                        Log.e("aaaaaaaaa",term_en);
+                    }catch (Exception e){
+                        e.printStackTrace();
+                    }
                     startActivity(intent);
                 }
             }
@@ -444,6 +454,10 @@ public class MainActivity extends AppCompatActivity {
             }
         }, 500, 3000);
 
+
+
+
+
         get_settings();
         get_banners();
         get_advertisements();
@@ -491,7 +505,9 @@ public class MainActivity extends AppCompatActivity {
                             Log.e("settings",result.toString());
                             about = result.get("about").getAsString();
                             about_ar = result.get("about_ar").getAsString();
-                            Log.e("a",about_ar);
+                            term_en = result.get("terms").getAsString();
+                            term_ar = result.get("terms_ar").getAsString();
+                            Log.e("a",term_en);
 
                         }catch (Exception e1){
                             e1.printStackTrace();
@@ -535,24 +551,32 @@ public class MainActivity extends AppCompatActivity {
                         hide_progress();
                         try {
                             final JsonObject jsonObject = result.get(0).getAsJsonObject();
-                            if (Session.GetLang(MainActivity.this).equals("ar")) {
-                                title.setText(jsonObject.get("title_ar").getAsString());
-                                Log.e("tte_ar",jsonObject.get("title_ar").getAsString());
-                            }else {
-                                title.setText(jsonObject.get("title").getAsString());
+                            try {
+                                if (Session.GetLang(MainActivity.this).equals("ar")) {
+                                    title.setText(jsonObject.get("title_ar").getAsString());
+                                    Log.e("tte_ar",jsonObject.get("title_ar").getAsString());
+                                }else {
+                                    title.setText(jsonObject.get("title").getAsString());
+                                }
+
+                                //price.setText(jsonObject.get("service").getAsJsonObject().get("price").getAsString());
+
+                                Glide.with(MainActivity.this).load(jsonObject.get("image").getAsString()).placeholder(R.drawable.placeholder500x250).into(ad_image);
+
+                                ad_image.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        Intent intent = new Intent(MainActivity.this,ServiceDetail.class);
+                                        intent.putExtra("services",categoriesfrom_api.get(1));
+                                        Log.e("ssss",categoriesfrom_api.toString());
+                                        startActivity(intent);
+                                    }
+                                });
+
+                            }catch (Exception e1){
+                                e1.printStackTrace();
                             }
 
-                            Glide.with(MainActivity.this).load(jsonObject.get("image").getAsString()).placeholder(R.drawable.placeholder500x250).into(ad_image);
-                            ad_image.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
-                                    Intent intent = new Intent();
-                                    intent.setAction(Intent.ACTION_VIEW);
-                                    intent.addCategory(Intent.CATEGORY_BROWSABLE);
-                                    intent.setData(Uri.parse(jsonObject.get("link").getAsString()));
-                                    startActivity(intent);
-                                }
-                            });
                         }catch (Exception e1){
                             e1.printStackTrace();
                         }

@@ -37,6 +37,7 @@
         <activity android:name=".ServicePopupActivity" android:screenOrientation="portrait"></activity>
         <activity android:name=".OurServicesActivity" android:screenOrientation="portrait"></activity>
         <activity android:name=".OffersActivity" android:screenOrientation="portrait"></activity>
+        <activity android:name=".TermsActivity" android:screenOrientation="portrait"></activity>
 
     </application>
 

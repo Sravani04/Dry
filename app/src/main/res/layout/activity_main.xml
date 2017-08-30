@@ -316,8 +316,8 @@
                             android:layout_height="40dp"
                             android:layout_gravity="center_vertical"
                             android:adjustViewBounds="true"
-                            android:padding="13dp"
-                            android:src="@drawable/cancel_black" />
+                            android:padding="9dp"
+                            android:src="@drawable/cancel" />
 
                         <com.example.yellowsoft.dry.TextViewBold
                             android:id="@+id/textView5"

@@ -54,7 +54,7 @@ public class BookAppointmentActivity extends Activity {
     ImageView close_btn;
     ListView listView;
     PopServicesAdapter popServicesAdapter;
-    String serv_title,service_id;
+    String serv_title,service_id,terms_en,terms_ar;
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -97,6 +97,11 @@ public class BookAppointmentActivity extends Activity {
             }
         });
         progress_holder.setVisibility(View.GONE);
+
+        if (getIntent()!=null && getIntent().hasExtra("terms")){
+            terms_en = getIntent().getStringExtra("terms");
+            terms_ar = getIntent().getStringExtra("terms_ar");
+        }
 
 
         st_bookapp.setText(Session.GetWord(this,"BOOK APPOINTMENT"));
@@ -175,6 +180,16 @@ public class BookAppointmentActivity extends Activity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(BookAppointmentActivity.this,EditProfile.class);
+                startActivity(intent);
+            }
+        });
+
+        st_terms.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(BookAppointmentActivity.this,TermsActivity.class);
+                intent.putExtra("terms",terms_en);
+                intent.putExtra("terms_ar",terms_ar);
                 startActivity(intent);
             }
         });
