@@ -130,6 +130,7 @@
                                         android:gravity="start"
                                         android:inputType="textPersonName"
                                         android:padding="5dp"
+                                        android:paddingLeft="5dp"
                                         android:textAlignment="viewStart"
                                         android:textColor="@color/textColor" />
 
