@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">Dry</string>
+    <string name="transition_name_image">transition:IMAGE</string>
+</resources>

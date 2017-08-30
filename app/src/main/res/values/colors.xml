@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#FFFFFF</color>
+    <color name="colorPrimaryDark">#060606</color>
+    <color name="colorAccent">#060606</color>
+    <color name="textColor">#060606</color>
+    <color name="colorActionBackground">#FFFFFF</color>
+    <color name="colorPrimarynew">#303F9F</color>
+    <color name="colorPrimaryLight">#aa303f9f</color>
+    <!--<color name="heading">http://fonts2u.com/open-sans-bold.font</color>-->
+    <!--<color name="normal">http://fonts2u.com/open-sans.font</color>-->
+</resources>

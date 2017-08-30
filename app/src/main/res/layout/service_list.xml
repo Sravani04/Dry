@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/page_number_label"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:textAppearance="@android:style/TextAppearance.Large"
+        android:visibility="gone"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#F1F1F1">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginTop="5dp" />
+
+        <LinearLayout
+            android:id="@+id/progress_holder"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:paddingBottom="50dp">
+
+            <com.singh.daman.proprogressviews.DottedArcProgress
+                android:id="@+id/progress_view"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:background="@drawable/progress_rounded_corners"
+                app:dots_color="@android:color/holo_red_dark"
+                app:dots_radius="30dp" />
+        </LinearLayout>
+
+    </RelativeLayout>
+
+
+
+</LinearLayout>

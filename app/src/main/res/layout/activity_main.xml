@@ -1,0 +1,571 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<android.support.v4.widget.DrawerLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawer_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    >
+
+    <RelativeLayout
+        android:id="@+id/mainView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#FFFFFF">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentStart="false"
+            android:orientation="vertical">
+
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <android.support.v7.widget.Toolbar
+                        android:id="@+id/my_awesome_toolbar"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="#FFFFFF"
+                        android:minHeight="?attr/actionBarSize" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="#EAEAEA"
+                        android:orientation="vertical"></LinearLayout>
+
+                    <ScrollView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="start"
+                        android:clipToPadding="false"
+                        android:fillViewport="true">
+
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical">
+
+
+                            <RelativeLayout
+                                android:id="@+id/activity_landing"
+                                android:layout_width="match_parent"
+                                android:layout_height="440dp"
+                                android:background="#ffffff">
+
+
+                                <!--<ImageView-->
+                                <!--android:id="@+id/banner_image"-->
+                                <!--android:layout_width="match_parent"-->
+                                <!--android:layout_height="340dp"-->
+                                <!--android:adjustViewBounds="true"-->
+                                <!--android:scaleType="centerCrop"-->
+                                <!--android:src="@drawable/banner" />-->
+
+                                <android.support.v4.view.ViewPager
+                                    android:id="@+id/viewPager"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="370dp"
+                                    android:adjustViewBounds="true"
+                                    android:src="@drawable/banner" />
+
+
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="wrap_content"
+                                    android:layout_alignParentBottom="true"
+                                    android:layout_alignParentRight="true"
+                                    android:layout_centerHorizontal="false"
+                                    android:layout_centerInParent="false"
+                                    android:orientation="horizontal">
+
+
+                                    <RelativeLayout
+                                        android:id="@+id/book_appointment"
+                                        android:layout_width="170dp"
+                                        android:layout_height="match_parent"
+                                        android:layout_marginLeft="10dp"
+                                        android:layout_marginRight="10dp"
+                                        android:layout_weight="1">
+
+                                        <LinearLayout
+                                            android:layout_width="match_parent"
+                                            android:layout_height="match_parent"
+                                            android:orientation="vertical">
+
+                                            <RelativeLayout
+                                                android:layout_width="match_parent"
+                                                android:layout_height="match_parent">
+
+                                                <ImageView
+                                                    android:id="@+id/imageView"
+                                                    android:layout_width="match_parent"
+                                                    android:layout_height="match_parent"
+                                                    android:adjustViewBounds="true"
+                                                    android:scaleType="centerCrop"
+                                                    android:src="@drawable/home_box" />
+
+                                                <ImageView
+                                                    android:id="@+id/myImageView"
+                                                    android:layout_width="70dp"
+                                                    android:layout_height="wrap_content"
+                                                    android:layout_centerHorizontal="true"
+                                                    android:layout_centerVertical="false"
+                                                    android:layout_marginTop="25dp"
+                                                    android:adjustViewBounds="true"
+                                                    android:src="@drawable/book_appointments" />
+
+                                                <LinearLayout
+                                                    android:layout_width="match_parent"
+                                                    android:layout_height="wrap_content"
+                                                    android:layout_below="@+id/myImageView"
+                                                    android:layout_marginTop="5dp"
+                                                    android:orientation="vertical">
+
+                                                    <TextView
+                                                        android:id="@+id/st_bookapp"
+                                                        android:layout_width="match_parent"
+                                                        android:layout_height="wrap_content"
+                                                        android:layout_alignParentBottom="false"
+                                                        android:layout_alignParentEnd="false"
+                                                        android:layout_alignWithParentIfMissing="false"
+                                                        android:layout_below="@+id/imageView"
+                                                        android:layout_centerHorizontal="false"
+                                                        android:layout_centerInParent="false"
+                                                        android:layout_marginRight="10dp"
+                                                        android:gravity="center_vertical|center_horizontal"
+                                                        android:paddingLeft="10dp"
+                                                        android:text="BOOK APPOINTMENTS"
+                                                        android:textColor="#000000"
+                                                        android:textSize="12sp" />
+                                                </LinearLayout>
+                                            </RelativeLayout>
+                                        </LinearLayout>
+
+
+                                    </RelativeLayout>
+
+                                    <RelativeLayout
+                                        android:id="@+id/services"
+                                        android:layout_width="170dp"
+                                        android:layout_height="130dp"
+                                        android:layout_marginLeft="10dp"
+                                        android:layout_marginRight="10dp"
+                                        android:layout_weight="1">
+
+                                        <LinearLayout
+                                            android:layout_width="match_parent"
+                                            android:layout_height="match_parent"
+                                            android:orientation="vertical">
+
+                                            <RelativeLayout
+                                                android:layout_width="match_parent"
+                                                android:layout_height="match_parent">
+
+                                                <ImageView
+                                                    android:id="@+id/imageView1"
+                                                    android:layout_width="match_parent"
+                                                    android:layout_height="match_parent"
+                                                    android:adjustViewBounds="true"
+                                                    android:scaleType="centerCrop"
+                                                    android:src="@drawable/home_box" />
+
+                                                <ImageView
+                                                    android:id="@+id/myImageView1"
+                                                    android:layout_width="70dp"
+                                                    android:layout_height="wrap_content"
+                                                    android:layout_centerHorizontal="true"
+                                                    android:layout_centerVertical="false"
+                                                    android:layout_marginTop="25dp"
+                                                    android:adjustViewBounds="true"
+                                                    android:src="@drawable/services" />
+
+                                                <LinearLayout
+                                                    android:layout_width="wrap_content"
+                                                    android:layout_height="wrap_content"
+                                                    android:layout_below="@+id/myImageView1"
+                                                    android:layout_centerHorizontal="true"
+                                                    android:layout_marginTop="5dp"
+                                                    android:orientation="vertical">
+
+                                                    <TextView
+                                                        android:id="@+id/st_services"
+                                                        android:layout_width="wrap_content"
+                                                        android:layout_height="wrap_content"
+                                                        android:layout_alignParentBottom="false"
+                                                        android:layout_alignParentEnd="false"
+                                                        android:layout_alignWithParentIfMissing="false"
+                                                        android:layout_below="@+id/imageView"
+                                                        android:layout_centerHorizontal="false"
+                                                        android:layout_centerInParent="false"
+                                                        android:layout_margin="1dp"
+                                                        android:layout_marginLeft="10dp"
+                                                        android:gravity="center_vertical|center_horizontal"
+                                                        android:text="OUR SERVICES"
+                                                        android:textColor="#000000"
+                                                        android:textSize="12sp" />
+                                                </LinearLayout>
+                                            </RelativeLayout>
+                                        </LinearLayout>
+
+
+                                    </RelativeLayout>
+
+
+                                </LinearLayout>
+
+
+                            </RelativeLayout>
+
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="100dp"
+                                android:layout_alignParentBottom="true"
+                                android:layout_marginLeft="10dp"
+                                android:layout_marginRight="10dp"
+                                android:layout_marginTop="10dp"
+                                android:background="#F1F1F1">
+
+                                <RelativeLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent">
+
+                                    <ImageView
+                                        android:id="@+id/ad_image"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_alignParentRight="false"
+                                        android:layout_alignParentTop="false"
+                                        android:adjustViewBounds="true"
+                                        android:baselineAlignBottom="false"
+                                        android:scaleType="centerCrop"
+                                        android:src="@drawable/banner" />
+
+                                    <LinearLayout
+                                        android:layout_width="match_parent"
+                                        android:layout_height="wrap_content"
+                                        android:layout_alignParentBottom="false"
+                                        android:layout_centerHorizontal="false"
+                                        android:layout_centerVertical="true"
+                                        android:layout_marginLeft="10dp"
+                                        android:layout_marginRight="10dp"
+                                        android:layout_weight="1"
+                                        android:orientation="vertical">
+
+                                        <TextView
+                                            android:id="@+id/price"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="20dp"
+                                            android:gravity="center_vertical"
+                                            android:text="KD 10"
+                                            android:textColor="@color/textColor" />
+
+                                        <TextView
+                                            android:id="@+id/title"
+                                            android:layout_width="wrap_content"
+                                            android:layout_height="30dp"
+                                            android:layout_weight="1"
+                                            android:gravity="center_vertical"
+                                            android:text="FOR HAIR BLOW DRY"
+                                            android:textColor="@color/textColor" />
+                                    </LinearLayout>
+                                </RelativeLayout>
+
+                            </LinearLayout>
+
+                        </LinearLayout>
+
+
+                    </ScrollView>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/popup_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="#DDFFFFFF"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="55dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"
+                        android:background="#FFFFFF"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:id="@+id/close_btn"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
+                            android:layout_gravity="center_vertical"
+                            android:adjustViewBounds="true"
+                            android:padding="13dp"
+                            android:src="@drawable/cancel_black" />
+
+                        <com.example.yellowsoft.dry.TextViewBold
+                            android:id="@+id/textView5"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:gravity="center_vertical|center_horizontal"
+                            android:text="SELECT SERVICES"
+                            android:textColor="@color/textColor" />
+
+                        <ImageView
+                            android:id="@+id/imageView6"
+                            android:layout_width="30dp"
+                            android:layout_height="30dp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="#D3D3D3"
+                        android:orientation="vertical"></LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/search_service"
+                        android:layout_width="match_parent"
+                        android:layout_height="40dp"
+                        android:orientation="horizontal">
+
+                        <EditText
+                            android:id="@+id/search"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:background="@android:color/transparent"
+                            android:ems="10"
+                            android:hint="Search Services"
+                            android:inputType="textPersonName"
+                            android:paddingLeft="13dp"
+                            android:textSize="14sp" />
+
+                        <SearchView
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginRight="10dp"
+                            android:padding="6dp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:background="#d3d3d3"
+                        android:orientation="vertical"></LinearLayout>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <ListView
+                            android:id="@+id/service_list"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:divider="@null" />
+
+
+                    </RelativeLayout>
+                </LinearLayout>
+
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/progress_holder"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:paddingBottom="50dp">
+
+            <com.singh.daman.proprogressviews.DottedArcProgress
+                android:id="@+id/progress_view"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
+                android:background="@drawable/progress_rounded_corners"
+                app:dots_color="@android:color/holo_red_dark"
+                app:dots_radius="30dp" />
+        </LinearLayout>
+
+
+    </RelativeLayout>
+
+
+    <LinearLayout
+        android:id="@+id/drawerView"
+        android:layout_width="240dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        android:background="@drawable/menu_bg"
+        android:fitsSystemWindows="true"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="250dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/menu_bg"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <RelativeLayout
+                    android:id="@+id/header_slide"
+                    android:layout_width="match_parent"
+                    android:layout_height="120dp"
+                    android:layout_margin="15dp">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <ImageView
+                            android:id="@+id/image_slide"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:padding="15dp"
+                            android:src="@drawable/menu_logo" />
+                    </LinearLayout>
+                </RelativeLayout>
+
+                <TextView
+                    android:id="@+id/space"
+                    android:layout_width="match_parent"
+                    android:layout_height="20dp"
+                    android:layout_below="@+id/header_slide" />
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_above="@+id/footer_slide"
+                    android:layout_below="@+id/space"
+                    android:layout_margin="10dp">
+
+                    <ScrollView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:orientation="vertical">
+
+                                <TextView
+                                    android:id="@+id/home_btn"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="40dp"
+                                    android:gravity="center_vertical"
+                                    android:paddingLeft="20dp"
+                                    android:text="HOME"
+                                    android:textColor="#ffffff"
+                                    android:textSize="12sp" />
+
+                                <TextView
+                                    android:id="@+id/about_btn"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="40dp"
+                                    android:gravity="center_vertical"
+                                    android:paddingLeft="20dp"
+                                    android:text="ABOUT US"
+                                    android:textColor="#ffffff"
+                                    android:textSize="12sp" />
+
+                                <TextView
+                                    android:id="@+id/services_btn"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="40dp"
+                                    android:gravity="center_vertical"
+                                    android:paddingLeft="20dp"
+                                    android:text="SERVICES"
+                                    android:textColor="#ffffff"
+                                    android:textSize="12sp" />
+
+
+                                <TextView
+                                    android:id="@+id/appointments_btn"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="40dp"
+                                    android:gravity="center_vertical"
+                                    android:paddingLeft="20dp"
+                                    android:text="APPOINTMENTS"
+                                    android:textColor="#ffffff"
+                                    android:textSize="12sp" />
+
+                                <TextView
+                                    android:id="@+id/offers_btn"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="40dp"
+                                    android:gravity="center_vertical"
+                                    android:paddingLeft="20dp"
+                                    android:text="OFFERS"
+                                    android:textColor="#ffffff"
+                                    android:textSize="12sp" />
+
+
+                                <TextView
+                                    android:id="@+id/contact_btn"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="40dp"
+                                    android:gravity="center_vertical"
+                                    android:paddingLeft="20dp"
+                                    android:text="CONTACT US"
+                                    android:textColor="#ffffff"
+                                    android:textSize="12sp" />
+
+                                <TextView
+                                    android:id="@+id/arabic_btn"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="40dp"
+                                    android:gravity="center_vertical"
+                                    android:paddingLeft="20dp"
+                                    android:text="ARABIC"
+                                    android:textColor="#ffffff"
+                                    android:textSize="17sp" />
+
+                            </LinearLayout>
+                        </LinearLayout>
+                    </ScrollView>
+
+
+                </RelativeLayout>
+
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+
+
+
+</android.support.v4.widget.DrawerLayout>
