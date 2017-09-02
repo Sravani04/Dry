@@ -2,6 +2,7 @@ package com.example.yellowsoft.dry;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,11 +20,13 @@ public class AppointmentAdapter extends BaseAdapter {
     Context context;
     LayoutInflater inflater;
     ArrayList<Appointments> appointments;
+    AppointmentsActivity activity;
 
-    public AppointmentAdapter(Context context,ArrayList<Appointments> appointments){
+    public AppointmentAdapter(Context context,ArrayList<Appointments> appointments,AppointmentsActivity activity){
         this.context = context;
         inflater = LayoutInflater.from(context);
         this.appointments  = appointments;
+        this.activity = activity;
     }
 
     @Override
@@ -57,12 +60,18 @@ public class AppointmentAdapter extends BaseAdapter {
         TextView st_date = (TextView) item_view.findViewById(R.id.st_date);
         TextView st_time = (TextView) item_view.findViewById(R.id.st_time);
         TextView st_id = (TextView) item_view.findViewById(R.id.st_id);
+        TextView status = (TextView) item_view.findViewById(R.id.status);
+        TextView st_status = (TextView) item_view.findViewById(R.id.st_status);
 
         st_fname.setText(Session.GetWord(context,"FIRST NAME"));
         st_lname.setText(Session.GetWord(context,"LAST NAME"));
         st_service_title.setText(Session.GetWord(context,"SERVICE"));
         st_date.setText(Session.GetWord(context,"DATE"));
         st_time.setText(Session.GetWord(context,"TIME"));
+        st_id.setText(Session.GetWord(context,"Appointment Id"));
+        st_status.setText(Session.GetWord(context,"Status"));
+
+
 
 //        ImageView edit_btn = (ImageView) item_view.findViewById(R.id.edit_btn);
 //        edit_btn.setOnClickListener(new View.OnClickListener() {
@@ -80,6 +89,8 @@ public class AppointmentAdapter extends BaseAdapter {
         date.setText(appointments.get(i).date);
         time.setText(appointments.get(i).time);
         appointment_id.setText(appointments.get(i).id);
+        status.setText(appointments.get(i).curr_status);
+
         return item_view;
     }
 }

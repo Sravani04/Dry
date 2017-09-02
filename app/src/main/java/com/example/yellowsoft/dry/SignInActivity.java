@@ -8,6 +8,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -43,6 +44,7 @@ public class SignInActivity extends Activity {
     Integer REQUEST_CAMERA=1,SELECT_FILE=0;
     ImageView profile_pic;
     TextView st_register;
+    Typeface regular,regular_arabic;
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -82,6 +84,30 @@ public class SignInActivity extends Activity {
         });
 
         st_register.setText(Session.GetWord(this,"REGISTER"));
+        fname.setHint(Session.GetWord(this,"FIRST NAME"));
+        lname.setHint(Session.GetWord(this,"LAST NAME"));
+        email.setHint(Session.GetWord(this,"Email"));
+        password.setHint(Session.GetWord(this,"Password"));
+        phone.setHint(Session.GetWord(this,"MOBILE"));
+        signin_btn.setText(Session.GetWord(this,"CREATE ACCOUNT"));
+
+        regular = Typeface.createFromAsset(this.getAssets(), "fonts/libel-suit-rg.ttf");
+        regular_arabic = Typeface.createFromAsset(this.getAssets(), "fonts/Hacen Tunisia.ttf");
+
+
+        if (Session.GetLang(this).equals("en")) {
+            fname.setTypeface(regular);
+            lname.setTypeface(regular);
+            phone.setTypeface(regular);
+            email.setTypeface(regular);
+            password.setTypeface(regular);
+        }else {
+            fname.setTypeface(regular_arabic);
+            lname.setTypeface(regular_arabic);
+            phone.setTypeface(regular_arabic);
+            email.setTypeface(regular_arabic);
+            password.setTypeface(regular_arabic);
+        }
 
 
 
@@ -108,13 +134,14 @@ public class SignInActivity extends Activity {
         }else if (lname_string.equals("")){
             Toast.makeText(SignInActivity.this,"Please Enter Last Name",Toast.LENGTH_SHORT).show();
             lname.requestFocus();
-        }else if (email_string.equals("")){
+        }else if (email_string.equals("") || !email_string.matches("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
+                + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$")){
             Toast.makeText(SignInActivity.this,"Please Enter Email",Toast.LENGTH_SHORT).show();
             email.requestFocus();
         }else if (password_string.equals("")){
             Toast.makeText(SignInActivity.this,"Please Enter Password",Toast.LENGTH_SHORT).show();
             password.requestFocus();
-        }else if (phone_string.equals("")){
+        }else if (phone_string.equals("") || !validCellPhone(phone_string) || phone_string.length() < 6 || phone_string.length() > 13){
             Toast.makeText(SignInActivity.this,"Please Enter Phone",Toast.LENGTH_SHORT).show();
             phone.requestFocus();
         }else {
@@ -143,6 +170,10 @@ public class SignInActivity extends Activity {
         }
     }
 
+    public boolean validCellPhone(String number){
+        return android.util.Patterns.PHONE.matcher(number).matches();
+    }
+
     public void show_images(){
         final CharSequence[] items = {"camera","gallery"};
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -164,6 +195,8 @@ public class SignInActivity extends Activity {
         AlertDialog alert = builder.create();
         alert.show();
     }
+
+
 
 
     String selected_image_path = "";

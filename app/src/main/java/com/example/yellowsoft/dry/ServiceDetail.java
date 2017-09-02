@@ -23,6 +23,7 @@ public class ServiceDetail extends Activity {
     TextView title,service_title,service_description,service_price,service_duration;
     ImageView service_image,book_now,back_btn,my_profile;
     Category services;
+    String terms_en,terms_ar;
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
@@ -44,10 +45,15 @@ public class ServiceDetail extends Activity {
             services = (Category) getIntent().getSerializableExtra("services");
         }
 
+        if (getIntent()!=null && getIntent().hasExtra("terms")){
+            terms_en = getIntent().getStringExtra("terms");
+            terms_ar = getIntent().getStringExtra("terms_ar");
+        }
+
         title.setText(services.title);
         service_title.setText(services.title);
         service_description.setText(Html.fromHtml(services.description));
-        service_price.setText(services.price);
+        service_price.setText(services.price + " " + "KD");
         service_duration.setText(services.duration);
         Glide.with(this).load(services.image).placeholder(R.drawable.placeholder500x250).into(service_image);
 
@@ -61,8 +67,10 @@ public class ServiceDetail extends Activity {
                     finish();
                 } else {
                     Intent intent = new Intent(ServiceDetail.this, BookAppointmentActivity.class);
-                    intent.putExtra("title", title.getText().toString());
-                    intent.putExtra("id", services.id);
+                    intent.putExtra("terms", terms_en);
+                    intent.putExtra("terms_ar", terms_ar);
+                    intent.putExtra("title",title.getText().toString());
+                    intent.putExtra("id",services.id);
                     startActivity(intent);
                 }
             }
@@ -83,7 +91,7 @@ public class ServiceDetail extends Activity {
                     startActivity(intent);
                     finish();
                 } else {
-                    Intent intent = new Intent(ServiceDetail.this, EditProfile.class);
+                    Intent intent = new Intent(ServiceDetail.this, MyProfilePage.class);
                     startActivity(intent);
                 }
             }

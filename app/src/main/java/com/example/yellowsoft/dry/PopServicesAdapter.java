@@ -34,8 +34,8 @@ public class PopServicesAdapter extends BaseAdapter implements Filterable {
         this.categories = categories;
         this.categories_all = categories;
         this.activity =activity;
-        bold = Typeface.createFromAsset(context.getAssets(), "fonts/OpenSans-Bold.ttf");
-        regular = Typeface.createFromAsset(context.getAssets(), "fonts/OpenSans-Regular.ttf");
+        bold = Typeface.createFromAsset(context.getAssets(), "fonts/libel-suit-rg.ttf");
+        regular = Typeface.createFromAsset(context.getAssets(), "fonts/libel-suit-rg.ttf");
 
     }
     @Override

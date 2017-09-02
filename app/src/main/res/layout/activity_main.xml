@@ -97,7 +97,7 @@
                                     <RelativeLayout
                                         android:id="@+id/book_appointment"
                                         android:layout_width="170dp"
-                                        android:layout_height="match_parent"
+                                        android:layout_height="150dp"
                                         android:layout_marginLeft="10dp"
                                         android:layout_marginRight="10dp"
                                         android:layout_weight="1">
@@ -116,27 +116,27 @@
                                                     android:layout_width="match_parent"
                                                     android:layout_height="match_parent"
                                                     android:adjustViewBounds="true"
-                                                    android:scaleType="centerCrop"
+                                                    android:scaleType="fitXY"
                                                     android:src="@drawable/home_box" />
-
-                                                <ImageView
-                                                    android:id="@+id/myImageView"
-                                                    android:layout_width="70dp"
-                                                    android:layout_height="wrap_content"
-                                                    android:layout_centerHorizontal="true"
-                                                    android:layout_centerVertical="false"
-                                                    android:layout_marginTop="25dp"
-                                                    android:adjustViewBounds="true"
-                                                    android:src="@drawable/book_appointments" />
 
                                                 <LinearLayout
                                                     android:layout_width="match_parent"
                                                     android:layout_height="wrap_content"
-                                                    android:layout_below="@+id/myImageView"
-                                                    android:layout_marginTop="5dp"
-                                                    android:orientation="vertical">
+                                                    android:layout_centerInParent="true"
+                                                    android:orientation="vertical"
+                                                    android:paddingTop="8dp">
 
-                                                    <TextView
+                                                    <ImageView
+                                                        android:id="@+id/myImageView"
+                                                        android:layout_width="75dp"
+                                                        android:layout_height="wrap_content"
+                                                        android:layout_centerHorizontal="true"
+                                                        android:layout_centerVertical="false"
+                                                        android:layout_gravity="center_vertical|center_horizontal"
+                                                        android:adjustViewBounds="true"
+                                                        android:src="@drawable/book_appointments" />
+
+                                                    <com.example.yellowsoft.dry.TextViewRegular
                                                         android:id="@+id/st_bookapp"
                                                         android:layout_width="match_parent"
                                                         android:layout_height="wrap_content"
@@ -147,11 +147,12 @@
                                                         android:layout_centerHorizontal="false"
                                                         android:layout_centerInParent="false"
                                                         android:layout_marginRight="10dp"
+                                                        android:layout_marginTop="5dp"
                                                         android:gravity="center_vertical|center_horizontal"
                                                         android:paddingLeft="10dp"
                                                         android:text="BOOK APPOINTMENTS"
                                                         android:textColor="#000000"
-                                                        android:textSize="12sp" />
+                                                        android:textSize="15sp" />
                                                 </LinearLayout>
                                             </RelativeLayout>
                                         </LinearLayout>
@@ -162,7 +163,7 @@
                                     <RelativeLayout
                                         android:id="@+id/services"
                                         android:layout_width="170dp"
-                                        android:layout_height="130dp"
+                                        android:layout_height="150dp"
                                         android:layout_marginLeft="10dp"
                                         android:layout_marginRight="10dp"
                                         android:layout_weight="1">
@@ -180,29 +181,30 @@
                                                     android:id="@+id/imageView1"
                                                     android:layout_width="match_parent"
                                                     android:layout_height="match_parent"
-                                                    android:adjustViewBounds="true"
-                                                    android:scaleType="centerCrop"
+                                                    android:adjustViewBounds="false"
+                                                    android:scaleType="fitXY"
                                                     android:src="@drawable/home_box" />
 
-                                                <ImageView
-                                                    android:id="@+id/myImageView1"
-                                                    android:layout_width="70dp"
-                                                    android:layout_height="wrap_content"
-                                                    android:layout_centerHorizontal="true"
-                                                    android:layout_centerVertical="false"
-                                                    android:layout_marginTop="25dp"
-                                                    android:adjustViewBounds="true"
-                                                    android:src="@drawable/services" />
-
                                                 <LinearLayout
-                                                    android:layout_width="wrap_content"
+                                                    android:layout_width="match_parent"
                                                     android:layout_height="wrap_content"
-                                                    android:layout_below="@+id/myImageView1"
-                                                    android:layout_centerHorizontal="true"
-                                                    android:layout_marginTop="5dp"
-                                                    android:orientation="vertical">
+                                                    android:layout_centerHorizontal="false"
+                                                    android:layout_centerInParent="true"
+                                                    android:layout_centerVertical="false"
+                                                    android:gravity="center"
+                                                    android:orientation="vertical"
+                                                    android:paddingTop="10dp">
 
-                                                    <TextView
+                                                    <ImageView
+                                                        android:id="@+id/myImageView1"
+                                                        android:layout_width="70dp"
+                                                        android:layout_height="wrap_content"
+                                                        android:layout_centerHorizontal="true"
+                                                        android:layout_centerVertical="false"
+                                                        android:adjustViewBounds="true"
+                                                        android:src="@drawable/services" />
+
+                                                    <com.example.yellowsoft.dry.TextViewRegular
                                                         android:id="@+id/st_services"
                                                         android:layout_width="wrap_content"
                                                         android:layout_height="wrap_content"
@@ -212,12 +214,11 @@
                                                         android:layout_below="@+id/imageView"
                                                         android:layout_centerHorizontal="false"
                                                         android:layout_centerInParent="false"
-                                                        android:layout_margin="1dp"
-                                                        android:layout_marginLeft="10dp"
+                                                        android:layout_marginTop="5dp"
                                                         android:gravity="center_vertical|center_horizontal"
                                                         android:text="OUR SERVICES"
                                                         android:textColor="#000000"
-                                                        android:textSize="12sp" />
+                                                        android:textSize="15sp" />
                                                 </LinearLayout>
                                             </RelativeLayout>
                                         </LinearLayout>
@@ -245,15 +246,22 @@
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent">
 
-                                    <ImageView
-                                        android:id="@+id/ad_image"
+                                    <!--<ImageView-->
+                                        <!--android:id="@+id/ad_image"-->
+                                        <!--android:layout_width="match_parent"-->
+                                        <!--android:layout_height="wrap_content"-->
+                                        <!--android:layout_alignParentRight="false"-->
+                                        <!--android:layout_alignParentTop="false"-->
+                                        <!--android:adjustViewBounds="true"-->
+                                        <!--android:baselineAlignBottom="false"-->
+                                        <!--android:scaleType="fitXY"-->
+                                        <!--android:src="@drawable/banner" />-->
+
+                                    <android.support.v4.view.ViewPager
+                                        android:id="@+id/pager"
                                         android:layout_width="match_parent"
                                         android:layout_height="wrap_content"
-                                        android:layout_alignParentRight="false"
-                                        android:layout_alignParentTop="false"
                                         android:adjustViewBounds="true"
-                                        android:baselineAlignBottom="false"
-                                        android:scaleType="centerCrop"
                                         android:src="@drawable/banner" />
 
                                     <LinearLayout
@@ -265,24 +273,27 @@
                                         android:layout_marginLeft="10dp"
                                         android:layout_marginRight="10dp"
                                         android:layout_weight="1"
-                                        android:orientation="vertical">
+                                        android:orientation="vertical"
+                                        android:visibility="gone">
 
-                                        <TextView
+                                        <com.example.yellowsoft.dry.TextViewRegular
                                             android:id="@+id/price"
                                             android:layout_width="wrap_content"
                                             android:layout_height="20dp"
                                             android:gravity="center_vertical"
                                             android:text="KD 10"
-                                            android:textColor="@color/textColor" />
+                                            android:textColor="@color/textColor"
+                                            android:textSize="12sp" />
 
-                                        <TextView
+                                        <com.example.yellowsoft.dry.TextViewRegular
                                             android:id="@+id/title"
                                             android:layout_width="wrap_content"
                                             android:layout_height="30dp"
                                             android:layout_weight="1"
                                             android:gravity="center_vertical"
                                             android:text="FOR HAIR BLOW DRY"
-                                            android:textColor="@color/textColor" />
+                                            android:textColor="@color/textColor"
+                                            android:textSize="12sp" />
                                     </LinearLayout>
                                 </RelativeLayout>
 
@@ -434,7 +445,7 @@
                 <RelativeLayout
                     android:id="@+id/header_slide"
                     android:layout_width="match_parent"
-                    android:layout_height="120dp"
+                    android:layout_height="wrap_content"
                     android:layout_margin="15dp">
 
                     <LinearLayout
@@ -444,9 +455,11 @@
 
                         <ImageView
                             android:id="@+id/image_slide"
-                            android:layout_width="match_parent"
+                            android:layout_width="150dp"
                             android:layout_height="wrap_content"
-                            android:padding="15dp"
+                            android:layout_gravity="center_vertical|center_horizontal"
+                            android:adjustViewBounds="true"
+                            android:padding="10dp"
                             android:src="@drawable/menu_logo" />
                     </LinearLayout>
                 </RelativeLayout>
@@ -478,7 +491,7 @@
                                 android:layout_height="match_parent"
                                 android:orientation="vertical">
 
-                                <TextView
+                                <com.example.yellowsoft.dry.TextViewBold
                                     android:id="@+id/home_btn"
                                     android:layout_width="match_parent"
                                     android:layout_height="40dp"
@@ -486,9 +499,9 @@
                                     android:paddingLeft="20dp"
                                     android:text="HOME"
                                     android:textColor="#ffffff"
-                                    android:textSize="12sp" />
+                                    android:textSize="16sp" />
 
-                                <TextView
+                                <com.example.yellowsoft.dry.TextViewBold
                                     android:id="@+id/about_btn"
                                     android:layout_width="match_parent"
                                     android:layout_height="40dp"
@@ -496,9 +509,9 @@
                                     android:paddingLeft="20dp"
                                     android:text="ABOUT US"
                                     android:textColor="#ffffff"
-                                    android:textSize="12sp" />
+                                    android:textSize="16sp" />
 
-                                <TextView
+                                <com.example.yellowsoft.dry.TextViewBold
                                     android:id="@+id/services_btn"
                                     android:layout_width="match_parent"
                                     android:layout_height="40dp"
@@ -506,10 +519,20 @@
                                     android:paddingLeft="20dp"
                                     android:text="SERVICES"
                                     android:textColor="#ffffff"
-                                    android:textSize="12sp" />
+                                    android:textSize="16sp" />
 
 
-                                <TextView
+                                <com.example.yellowsoft.dry.TextViewBold
+                                    android:id="@+id/profile_btn"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="40dp"
+                                    android:gravity="center_vertical"
+                                    android:paddingLeft="20dp"
+                                    android:text="MY PROFILE"
+                                    android:textColor="#ffffff"
+                                    android:textSize="16sp" />
+
+                                <com.example.yellowsoft.dry.TextViewBold
                                     android:id="@+id/appointments_btn"
                                     android:layout_width="match_parent"
                                     android:layout_height="40dp"
@@ -517,20 +540,10 @@
                                     android:paddingLeft="20dp"
                                     android:text="APPOINTMENTS"
                                     android:textColor="#ffffff"
-                                    android:textSize="12sp" />
-
-                                <TextView
-                                    android:id="@+id/offers_btn"
-                                    android:layout_width="match_parent"
-                                    android:layout_height="40dp"
-                                    android:gravity="center_vertical"
-                                    android:paddingLeft="20dp"
-                                    android:text="OFFERS"
-                                    android:textColor="#ffffff"
-                                    android:textSize="12sp" />
+                                    android:textSize="16sp" />
 
 
-                                <TextView
+                                <com.example.yellowsoft.dry.TextViewBold
                                     android:id="@+id/contact_btn"
                                     android:layout_width="match_parent"
                                     android:layout_height="40dp"
@@ -538,7 +551,7 @@
                                     android:paddingLeft="20dp"
                                     android:text="CONTACT US"
                                     android:textColor="#ffffff"
-                                    android:textSize="12sp" />
+                                    android:textSize="16sp" />
 
                                 <TextView
                                     android:id="@+id/arabic_btn"
@@ -548,7 +561,7 @@
                                     android:paddingLeft="20dp"
                                     android:text="ARABIC"
                                     android:textColor="#ffffff"
-                                    android:textSize="17sp" />
+                                    android:textSize="16sp" />
 
                             </LinearLayout>
                         </LinearLayout>

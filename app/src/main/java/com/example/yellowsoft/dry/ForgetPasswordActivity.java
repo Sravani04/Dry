@@ -24,7 +24,7 @@ public class ForgetPasswordActivity extends Activity {
     RelativeLayout send_btn;
     EditText email;
     LinearLayout progress_holder;
-    TextView st_forgot_password;
+    TextView st_forgot_password,submit_btn;
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -34,9 +34,14 @@ public class ForgetPasswordActivity extends Activity {
         send_btn = (RelativeLayout) findViewById(R.id.send_btn);
         email    = (EditText) findViewById(R.id.email);
         st_forgot_password = (TextView) findViewById(R.id.st_forgot_password);
+        submit_btn = (TextView) findViewById(R.id.submit_btn);
         st_forgot_password.setText(Session.GetWord(this,"FORGOT PASSWORD"));
         progress_holder = (LinearLayout) findViewById(R.id.progress_holder);
         progress_holder.setVisibility(View.GONE);
+
+        email.setHint(Session.GetWord(this,"Email Address"));
+        submit_btn.setText(Session.GetWord(this,"SUBMIT"));
+
 
         send_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -66,7 +71,7 @@ public class ForgetPasswordActivity extends Activity {
 
     public void forget_password(){
         String email_string = email.getText().toString();
-        if (email_string.equals("")){
+        if (email_string.equals("") || !email_string.matches("[a-zA-Z0-9._-]+@[a-z]+.[a-z]+")){
             Toast.makeText(ForgetPasswordActivity.this,"Please Enter Email",Toast.LENGTH_SHORT).show();
         }else {
             show_progress();

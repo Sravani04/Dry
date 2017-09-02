@@ -3,6 +3,7 @@ package com.example.yellowsoft.dry;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,10 @@ import android.widget.BaseAdapter;
 import android.widget.Filter;
 import android.widget.Filterable;
 import android.widget.TextView;
+
+import com.google.gson.JsonObject;
+import com.koushikdutta.async.future.FutureCallback;
+import com.koushikdutta.ion.Ion;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,16 +29,22 @@ public class ServicesPageAdapter extends BaseAdapter implements Filterable {
     LayoutInflater inflater;
     ArrayList<Category> categories;
     ArrayList<Category> categories_all;
-    Typeface bold,regular;
+    Typeface bold,regular,bold_arabic,regular_arabic;
     PlanetFilter planetFilter;
+    String term_en,term_ar;
     public ServicesPageAdapter(Context context,ArrayList<Category> categories){
         this.context = context;
         inflater = LayoutInflater.from(context);
         this.categories = categories;
         this.categories_all = categories;
 //        this.services =services;
-         bold = Typeface.createFromAsset(context.getAssets(), "fonts/OpenSans-Bold.ttf");
-        regular = Typeface.createFromAsset(context.getAssets(), "fonts/OpenSans-Regular.ttf");
+
+            bold = Typeface.createFromAsset(context.getAssets(), "fonts/libel-suit-rg.ttf");
+            bold_arabic = Typeface.createFromAsset(context.getAssets(), "fonts/Hacen Tunisia Bd.ttf");
+            regular = Typeface.createFromAsset(context.getAssets(), "fonts/libel-suit-rg.ttf");
+            regular_arabic = Typeface.createFromAsset(context.getAssets(), "fonts/Hacen Tunisia.ttf");
+
+
 
     }
     @Override
@@ -64,22 +75,36 @@ public class ServicesPageAdapter extends BaseAdapter implements Filterable {
                 }else {
                     Intent intent = new Intent(context, ServiceDetail.class);
                     intent.putExtra("services", categories.get(i));
+                    intent.putExtra("terms",term_en);
+                    intent.putExtra("terms_ar",term_ar);
                     context.startActivity(intent);
                 }
             }
         });
 
-        if(categories.get(i).type.equals("0")){
+        if(categories.get(i).type.equals("0")) {
 
-            category_title.setTypeface(bold);
+            if (Session.GetLang(context).equals("en")){
+
+                category_title.setTypeface(bold, Typeface.BOLD);
+        }else {
+                category_title.setTypeface(bold_arabic);
+            }
+
+
 
         }else{
 
-            category_title.setTypeface(regular);
+            if (Session.GetLang(context).equals("en")) {
 
-
+                category_title.setTypeface(regular);
+            }else {
+                category_title.setTypeface(regular_arabic);
+            }
 
         }
+
+        get_settings();
         return item_view;
     }
 
@@ -144,5 +169,28 @@ public class ServicesPageAdapter extends BaseAdapter implements Filterable {
 
         }
 
+    }
+
+    public void get_settings(){
+        Ion.with(context)
+                .load(Session.SERVER_URL+"settings.php")
+                .asJsonObject()
+                .setCallback(new FutureCallback<JsonObject>() {
+                    @Override
+                    public void onCompleted(Exception e, JsonObject result) {
+                        try {
+                            if (e != null)
+                                e.printStackTrace();
+                            Log.e("settings",result.toString());
+                            term_en = result.get("terms").getAsString();
+                            term_ar = result.get("terms_ar").getAsString();
+                            Log.e("a",term_en);
+
+                        }catch (Exception e1){
+                            e1.printStackTrace();
+                        }
+
+                    }
+                });
     }
 }

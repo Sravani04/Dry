@@ -27,7 +27,7 @@
             android:gravity="center_vertical|center_horizontal"
             android:text="CHOOSE LANGUAGE"
             android:textColor="#FFFFFF"
-            />
+            android:textSize="15sp" />
 
         <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:id="@+id/english_btn"

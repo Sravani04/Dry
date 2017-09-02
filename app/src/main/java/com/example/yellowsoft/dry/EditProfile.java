@@ -8,10 +8,13 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.text.TextUtils;
 import android.util.Log;
+import android.util.Patterns;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
@@ -35,6 +38,8 @@ import com.squareup.picasso.Picasso;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
@@ -50,6 +55,8 @@ public class EditProfile extends Activity {
     Integer REQUEST_CAMERA=1,SELECT_FILE=0;
     TextView logout_btn,update_btn;
     TextView st_profile;
+    Typeface bold,bold_arabic,regular,regular_arabic;
+
 
 
     @Override
@@ -68,10 +75,20 @@ public class EditProfile extends Activity {
         st_profile = (TextView) findViewById(R.id.st_profile);
         progress_holder = (LinearLayout) findViewById(R.id.progress_holder);
         progress_holder.setVisibility(View.GONE);
-        logout_btn = (TextView) findViewById(R.id.logout_btn);
+      //  logout_btn = (TextView) findViewById(R.id.logout_btn);
+
+        bold = Typeface.createFromAsset(this.getAssets(), "fonts/libel-suit-rg.ttf");
+        bold_arabic = Typeface.createFromAsset(this.getAssets(), "fonts/Hacen Tunisia Bd.ttf");
+        regular = Typeface.createFromAsset(this.getAssets(), "fonts/libel-suit-rg.ttf");
+        regular_arabic = Typeface.createFromAsset(this.getAssets(), "fonts/Hacen Tunisia.ttf");
 
         st_profile.setText(Session.GetWord(this,"PROFILE"));
-        logout_btn.setText(Session.GetWord(this,"LOGOUT"));
+        fname.setHint(Session.GetWord(this,"FIRST NAME"));
+        lname.setHint(Session.GetWord(this,"LAST NAME"));
+        email.setHint(Session.GetWord(this,"Email"));
+        phone.setHint(Session.GetWord(this,"MOBILE"));
+        update_btn.setHint(Session.GetWord(this,"UPDATE"));
+//        logout_btn.setText(Session.GetWord(this,"LOGOUT"));
         update_btn.setText(Session.GetWord(this,"UPDATE"));
 
         update_btn.setOnClickListener(new View.OnClickListener() {
@@ -91,19 +108,33 @@ public class EditProfile extends Activity {
         back_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                finish();
-            }
-        });
-
-        logout_btn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Session.SetUserId(EditProfile.this,"-1");
-                Intent intent = new Intent(EditProfile.this,LoginActivity.class);
+                Intent intent = new Intent(EditProfile.this,MyProfilePage.class);
                 startActivity(intent);
                 finish();
             }
         });
+
+        if (Session.GetLang(this).equals("en")) {
+            fname.setTypeface(regular);
+            lname.setTypeface(regular);
+            email.setTypeface(regular);
+            phone.setTypeface(regular);
+        }else {
+            fname.setTypeface(regular_arabic);
+            lname.setTypeface(regular_arabic);
+            email.setTypeface(regular_arabic);
+            phone.setTypeface(regular_arabic);
+        }
+
+//        logout_btn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Session.SetUserId(EditProfile.this,"-1");
+//                Intent intent = new Intent(EditProfile.this,LoginActivity.class);
+//                startActivity(intent);
+//                finish();
+//            }
+//        });
 
 
         get_members();
@@ -130,10 +161,11 @@ public class EditProfile extends Activity {
         }else if (lname_string.equals("")){
             Toast.makeText(EditProfile.this,"Please Enter Last Name",Toast.LENGTH_SHORT).show();
             lname.requestFocus();
-        }else if (email_string.equals("")){
+        }else if (email_string.equals("") || !email_string.matches("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
+                + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$")){
             Toast.makeText(EditProfile.this,"Please Enter Email",Toast.LENGTH_SHORT).show();
             email.requestFocus();
-        }else if (phone_string.equals("")){
+        }else if (phone_string.equals("") || !validCellPhone(phone_string) || phone_string.length() < 6 || phone_string.length() > 13){
             Toast.makeText(EditProfile.this,"Please Enter Phone",Toast.LENGTH_SHORT).show();
             phone.requestFocus();
         }else {
@@ -164,6 +196,14 @@ public class EditProfile extends Activity {
                     });
         }
     }
+
+
+    public boolean validCellPhone(String number){
+        return android.util.Patterns.PHONE.matcher(number).matches();
+    }
+
+
+
 
 
 
@@ -270,7 +310,9 @@ public class EditProfile extends Activity {
 
     public void add_success(){
         Toast.makeText(EditProfile.this, "Updated Successfully", Toast.LENGTH_SHORT).show();
-        EditProfile.this.onBackPressed();
+        Intent intent = new Intent(EditProfile.this,MyProfilePage.class);
+        startActivity(intent);
+        finish();
     }
 
     private String getRealPathFromURI(Uri contentURI) {
@@ -306,7 +348,7 @@ public class EditProfile extends Activity {
                                 lname.setText(jsonObject.get("lname").getAsString());
                                 email.setText(jsonObject.get("email").getAsString());
                                 phone.setText(jsonObject.get("phone").getAsString());
-                                Picasso.with(EditProfile.this).load(jsonObject.get("image").getAsString()).placeholder(R.drawable.placeholder500x250).into(profile_pic);
+                               // Picasso.with(EditProfile.this).load(jsonObject.get("image").getAsString()).placeholder(R.drawable.placeholder500x250).into(profile_pic);
                             }catch (Exception e1){
                                 e1.printStackTrace();
                             }

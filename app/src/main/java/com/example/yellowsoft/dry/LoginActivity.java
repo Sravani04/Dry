@@ -2,6 +2,7 @@ package com.example.yellowsoft.dry;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -27,6 +28,7 @@ public class LoginActivity extends Activity {
     TextView forget_pwd,signup_btn;
     ImageView back_btn;
     TextView st_login;
+    Typeface regular,regular_arabic;
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -49,7 +51,23 @@ public class LoginActivity extends Activity {
             }
         });
 
+        regular = Typeface.createFromAsset(this.getAssets(), "fonts/libel-suit-rg.ttf");
+        regular_arabic = Typeface.createFromAsset(this.getAssets(), "fonts/Hacen Tunisia.ttf");
+
         st_login.setText(Session.GetWord(this,"LOGIN"));
+        email.setHint(Session.GetWord(this,"Email Address"));
+        password.setHint(Session.GetWord(this,"Password"));
+        signup_btn.setText(Session.GetWord(this,"REGISTER"));
+        login_btn.setText(Session.GetWord(this,"LOGIN"));
+        forget_pwd.setText(Session.GetWord(this,"FORGOT PASSWORD"));
+
+        if (Session.GetLang(this).equals("en")) {
+            email.setTypeface(regular);
+            password.setTypeface(regular);
+        }else {
+            email.setTypeface(regular_arabic);
+            password.setTypeface(regular_arabic);
+        }
 
         forget_pwd.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -91,7 +109,8 @@ public class LoginActivity extends Activity {
     public void login(){
         String email_string = email.getText().toString();
         String password_string = password.getText().toString();
-        if (email_string.equals("")){
+        if (email_string.equals("") || !email_string.matches("^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@"
+                + "[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$")){
             Toast.makeText(LoginActivity.this,"Please Enter Email Id",Toast.LENGTH_SHORT).show();
             email.requestFocus();
         }else if (password_string.equals("")){

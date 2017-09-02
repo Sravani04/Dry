@@ -12,11 +12,13 @@ import java.io.Serializable;
 
 public class Banners implements Serializable {
     public String id,title,title_ar,image;
+    public Category category;
     public Banners(JsonObject jsonObject, Context context){
         id = jsonObject.get("id").getAsString();
         title = jsonObject.get("title").getAsString();
         title_ar = jsonObject.get("title_ar").getAsString();
         image = jsonObject.get("image").getAsString();
+        category = new Category(jsonObject.get("service").getAsJsonObject(),context,"1");
         if (Session.GetLang(context).equals("ar")) {
             title = title_ar;
         }

@@ -31,8 +31,8 @@
 
         <ImageView
             android:id="@+id/imageView3"
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
             android:adjustViewBounds="true"
             android:padding="10dp" />
     </LinearLayout>
@@ -46,6 +46,40 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:divider="@null"/>
+
+        <LinearLayout
+            android:id="@+id/no_appointment_page"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#FFFFFF"
+            android:orientation="vertical"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/textView11"
+                android:layout_width="match_parent"
+                android:layout_height="150dp" />
+
+            <com.example.yellowsoft.dry.TextViewRegular
+                android:id="@+id/st_notfound"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:gravity="center_vertical|center_horizontal"
+                android:text="No appointments found"
+                android:textColor="#000000"
+                android:textSize="16sp" />
+
+            <ImageView
+                android:id="@+id/imageView8"
+                android:layout_width="90dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:adjustViewBounds="true"
+                android:padding="10dp"
+                android:src="@drawable/lady" />
+        </LinearLayout>
 
         <LinearLayout
             android:id="@+id/progress_holder"

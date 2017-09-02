@@ -6,8 +6,10 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
+import android.graphics.Bitmap;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Handler;
 import android.support.v4.view.GravityCompat;
@@ -26,6 +28,7 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -40,6 +43,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.gson.JsonArray;
@@ -52,10 +56,12 @@ import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import static com.example.yellowsoft.dry.R.id.imageView;
+
 public class MainActivity extends AppCompatActivity {
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mDrawerToggle;
-    TextView services_btn,appointments_btn,contact_btn,about_btn,home_btn,arabic_btn,offer_btn;
+    TextView services_btn,appointments_btn,contact_btn,about_btn,home_btn,arabic_btn,profile_btn;
     ImageView menu_btn;
     ImageView page_logo;
     ImageView profile,ad_image;
@@ -81,6 +87,14 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<Services> servicesfrom_api;
     String lang;
     String term_en,term_ar;
+    ViewPager pager;
+    AdvertisementsAdapter advertisementsAdapter;
+    ArrayList<Advertisements> advertisementsfrom_api;
+    Timer timer2;
+    Runnable Update_ad;
+    private static long back_pressed;
+    Bitmap bitMap;
+    Object new_width;
 
 
 
@@ -144,33 +158,29 @@ public class MainActivity extends AppCompatActivity {
         services_btn = (TextView) findViewById(R.id.services_btn);
         appointments_btn = (TextView) findViewById(R.id.appointments_btn);
         contact_btn = (TextView) findViewById(R.id.contact_btn);
-        offer_btn = (TextView) findViewById(R.id.offers_btn);
+        profile_btn = (TextView) findViewById(R.id.profile_btn);
         about_btn = (TextView) findViewById(R.id.about_btn);
         book_appointment = (RelativeLayout) findViewById(R.id.book_appointment);
         services = (RelativeLayout) findViewById(R.id.services);
         home_btn = (TextView) findViewById(R.id.home_btn);
         viewPager = (ViewPager) findViewById(R.id.viewPager);
         title = (TextView) findViewById(R.id.title);
-        ad_image = (ImageView) findViewById(R.id.ad_image);
+        //ad_image = (ImageView) findViewById(R.id.ad_image);
         arabic_btn = (TextView) findViewById(R.id.arabic_btn);
         st_bookapp = (TextView) findViewById(R.id.st_bookapp);
         st_services = (TextView) findViewById(R.id.st_services);
         price = (TextView) findViewById(R.id.price);
         progress_holder = (LinearLayout) findViewById(R.id.progress_holder);
         popup_view = (LinearLayout) findViewById(R.id.popup_view);
+        pager = (ViewPager) findViewById(R.id.pager);
         progress_holder.setVisibility(View.GONE);
         bannersfrom_api = new ArrayList<>();
         categoriesfrom_api = new ArrayList<>();
         servicesfrom_api = new ArrayList<>();
+        advertisementsfrom_api = new ArrayList<>();
 
-        final Typeface bold = Typeface.createFromAsset(getAssets(), "fonts/OpenSans-Bold.ttf");
-        final Typeface regular = Typeface.createFromAsset(getAssets(), "fonts/OpenSans-Regular.ttf");
-
-        st_bookapp.setTypeface(regular);
-        st_services.setTypeface(regular);
-        title.setTypeface(regular);
-        price.setTypeface(regular);
-
+        final Typeface arabic_font = Typeface.createFromAsset(getAssets(), "fonts/Hacen Tunisia Bd.ttf");
+        final Typeface bold = Typeface.createFromAsset(getAssets(), "fonts/libel-suit-rg.ttf");
 
         st_bookapp.setText(Session.GetWord(this,"Book Appointments"));
         st_services.setText(Session.GetWord(this,"OUR SERVICES"));
@@ -213,6 +223,33 @@ public class MainActivity extends AppCompatActivity {
         };
 
 
+        advertisementsAdapter = new AdvertisementsAdapter(this,advertisementsfrom_api);
+        pager = (ViewPager) findViewById(R.id.pager);
+        pager.setPageTransformer(true,new FadePageTransformer());
+        pager.setAdapter(advertisementsAdapter);
+
+
+        final Handler handler_ad = new Handler();
+        Update_ad = new Runnable() {
+            public void run() {
+
+                if(pager.getCurrentItem()<advertisementsfrom_api.size()-1)
+                    pager.setCurrentItem(pager.getCurrentItem()+1);
+                else
+                    pager.setCurrentItem(0);
+
+                handler_ad.postDelayed(Update_ad,2000);
+
+            }
+        };
+        Update_ad.run();
+
+
+
+
+
+
+
 
         listView = (ListView) findViewById(R.id.service_list);
         close_btn = (ImageView) findViewById(R.id.close_btn);
@@ -229,25 +266,19 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        services_btn.setTypeface(bold);
-        contact_btn.setTypeface(bold);
-        appointments_btn.setTypeface(bold);
-        about_btn.setTypeface(bold);
-        arabic_btn.setTypeface(bold);
-        home_btn.setTypeface(bold);
-        offer_btn.setTypeface(bold);
 
         home_btn.setText(Session.GetWord(this,"Home"));
         about_btn.setText(Session.GetWord(this,"ABOUT US"));
         services_btn.setText(Session.GetWord(this,"SERVICES"));
         appointments_btn.setText(Session.GetWord(this,"APPOINTMENTS"));
-        offer_btn.setText(Session.GetWord(this,"OFFERS"));
+        profile_btn.setText(Session.GetWord(this,"MY PROFILE"));
         contact_btn.setText(Session.GetWord(this,"CONTACT US"));
         arabic_btn.setText(Session.GetWord(this,"ARABIC"));
 
 
 
         mDrawerLayout.setDrawerListener(mDrawerToggle);
+
 
 
         services_btn.setOnClickListener(new View.OnClickListener() {
@@ -327,8 +358,11 @@ public class MainActivity extends AppCompatActivity {
 
         if (Session.GetLang(MainActivity.this).equals("en")){
             arabic_btn.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
+            //Typeface arabic_font = Typeface.createFromAsset(getAssets(), "fonts/Hacen Tunisia.ttf");
+            arabic_btn.setTypeface(arabic_font);
         }else {
-            arabic_btn.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
+            arabic_btn.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
+            arabic_btn.setTypeface(bold,Typeface.BOLD);
         }
 
         profile.setOnClickListener(new View.OnClickListener() {
@@ -339,7 +373,7 @@ public class MainActivity extends AppCompatActivity {
                     startActivity(intent);
                     finish();
                 } else {
-                    Intent intent = new Intent(MainActivity.this, EditProfile.class);
+                    Intent intent = new Intent(MainActivity.this, MyProfilePage.class);
                     startActivity(intent);
                 }
             }
@@ -366,12 +400,19 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        offer_btn.setOnClickListener(new View.OnClickListener() {
+        profile_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(MainActivity.this,OffersActivity.class);
-                startActivity(intent);
-                mDrawerLayout.closeDrawer(GravityCompat.START,true);
+                if (Session.GetUserId(MainActivity.this).equals("-1")) {
+                    Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                    startActivity(intent);
+                    finish();
+                } else {
+                    Intent intent = new Intent(MainActivity.this, MyProfilePage.class);
+                    startActivity(intent);
+                    mDrawerLayout.closeDrawer(GravityCompat.START,true);
+                }
+
 
             }
         });
@@ -387,6 +428,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 popup_view.setVisibility(View.GONE);
+                Animation anim = AnimationUtils.loadAnimation(MainActivity.this, R.anim.top_to_bottom);
+                popup_view.startAnimation(anim);
                 View view1 = MainActivity.this.getCurrentFocus();
                 if (view1 != null) {
                     InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -459,6 +502,10 @@ public class MainActivity extends AppCompatActivity {
 
 
 
+
+
+
+
         get_settings();
         get_banners();
         get_advertisements();
@@ -466,6 +513,8 @@ public class MainActivity extends AppCompatActivity {
 
 
     }
+
+
 
 
 
@@ -482,7 +531,15 @@ public class MainActivity extends AppCompatActivity {
     public void onBackPressed()
     {
         // code here to show dialog
-        super.onBackPressed();  // optional depending on your needs
+        if (popup_view!=null){
+            popup_view.setVisibility(View.GONE);
+        }
+
+        if (back_pressed + 10000 > System.currentTimeMillis()){
+        super.onBackPressed();}
+        else{
+            back_pressed = System.currentTimeMillis();
+        }
     }
 
     public void show_progress(){
@@ -551,29 +608,15 @@ public class MainActivity extends AppCompatActivity {
                     public void onCompleted(Exception e, JsonArray result) {
                         hide_progress();
                         try {
-                            final JsonObject jsonObject = result.get(0).getAsJsonObject();
                             try {
-                                if (Session.GetLang(MainActivity.this).equals("ar")) {
-                                    title.setText(jsonObject.get("title_ar").getAsString());
-                                    Log.e("tte_ar",jsonObject.get("title_ar").getAsString());
-                                }else {
-                                    title.setText(jsonObject.get("title").getAsString());
+                                Log.e("ad", result.toString());
+                                for (int i = 0; i < result.size(); i++) {
+                                    Advertisements advertisements = new Advertisements(result.get(i).getAsJsonObject(), MainActivity.this);
+                                    advertisementsfrom_api.add(advertisements);
+
+
                                 }
-
-                                //price.setText(jsonObject.get("service").getAsJsonObject().get("price").getAsString());
-
-                                Glide.with(MainActivity.this).load(jsonObject.get("image").getAsString()).placeholder(R.drawable.placeholder500x250).into(ad_image);
-
-                                ad_image.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View view) {
-                                        Intent intent = new Intent(MainActivity.this,ServiceDetail.class);
-                                        intent.putExtra("services",categoriesfrom_api.get(1));
-                                        Log.e("ssss",categoriesfrom_api.toString());
-                                        startActivity(intent);
-                                    }
-                                });
-
+                                advertisementsAdapter.notifyDataSetChanged();
                             }catch (Exception e1){
                                 e1.printStackTrace();
                             }
@@ -723,5 +766,7 @@ public class MainActivity extends AppCompatActivity {
         startActivity(refresh);
         finish();
     }
+
+
 
 }

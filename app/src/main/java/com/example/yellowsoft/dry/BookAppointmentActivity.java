@@ -5,18 +5,27 @@ import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.Html;
+import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -42,19 +51,27 @@ import java.util.Calendar;
  */
 
 public class BookAppointmentActivity extends Activity {
-    ImageView back_btn,my_profile;
+    ImageView back_btn,my_profile,cancel_btn;
     String service_title,serv_id;
     TextView service_option,date,time;
     LinearLayout progress_holder;
-    EditText fname,lname,search;
+    EditText fname,lname,search,mobile;
     ArrayList<Category> categoriesfrom_api;
     RelativeLayout booknow_btn;
-    TextView st_bookapp,st_appointment,st_fname,st_lname,st_mobile,st_services,st_date,st_time,st_terms,st_booknow;
+    TextView st_bookapp,st_appointment,st_fname,st_lname,st_mobile,st_services,st_date,st_time,st_terms,st_booknow,terms;
     LinearLayout popup_view,search_service;
     ImageView close_btn;
-    ListView listView;
+    RecyclerView listView;
     PopServicesAdapter popServicesAdapter;
     String serv_title,service_id,terms_en,terms_ar;
+    LinearLayout services_btn,date_btn,time_btn,terms_popup;
+    ImageView services_dropdown,date_dropdown,time_dropdown;
+    String first_name,last_name,phone;
+    ArrayList<String> selectedServices;
+    ArrayList<String> servicesnames;
+    AddCurrencyAdapter addCurrencyAdapter;
+    ImageView save_btn;
+    Typeface regular,regular_arabic;
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -69,6 +86,7 @@ public class BookAppointmentActivity extends Activity {
         booknow_btn =  (RelativeLayout) findViewById(R.id.booknow_btn);
         fname = (EditText) findViewById(R.id.fname);
         lname = (EditText) findViewById(R.id.lname);
+        mobile = (EditText) findViewById(R.id.mobile);
         st_bookapp = (TextView) findViewById(R.id.st_bookapp);
         st_appointment = (TextView) findViewById(R.id.st_appointment);
         st_fname = (TextView) findViewById(R.id.st_fname);
@@ -81,21 +99,30 @@ public class BookAppointmentActivity extends Activity {
         st_booknow = (TextView) findViewById(R.id.st_booknow);
         popup_view = (LinearLayout) findViewById(R.id.popup_view);
         progress_holder = (LinearLayout) findViewById(R.id.progress_holder);
-        listView = (ListView) findViewById(R.id.service_list);
+        listView = (RecyclerView) findViewById(R.id.service_list);
         close_btn = (ImageView) findViewById(R.id.close_btn);
         search_service = (LinearLayout) findViewById(R.id.search_service);
         progress_holder = (LinearLayout) findViewById(R.id.progress_holder);
         progress_holder.setVisibility(View.GONE);
         search = (EditText) findViewById(R.id.search);
+        services_btn = (LinearLayout) findViewById(R.id.services_btn);
+        date_btn= (LinearLayout) findViewById(R.id.date_btn);
+        time_btn = (LinearLayout) findViewById(R.id.time_btn);
+        cancel_btn = (ImageView) findViewById(R.id.cancel_btn);
+        services_dropdown = (ImageView) findViewById(R.id.services_dropdown);
+        date_dropdown = (ImageView) findViewById(R.id.date_dropdown);
+        time_dropdown = (ImageView) findViewById(R.id.time_dropdown);
+        terms_popup = (LinearLayout) findViewById(R.id.terms_popup);
+        save_btn = (ImageView) findViewById(R.id.save_btn);
+        terms = (TextView) findViewById(R.id.terms);
         categoriesfrom_api = new ArrayList<>();
-        popServicesAdapter = new PopServicesAdapter(this,categoriesfrom_api,this);
-        listView.setAdapter(popServicesAdapter);
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+        selectedServices = new ArrayList<>();
+        servicesnames = new ArrayList<>();
+        addCurrencyAdapter = new AddCurrencyAdapter(categoriesfrom_api,this,this);
+        listView.setAdapter(addCurrencyAdapter);
+        listView.setHasFixedSize(true);
+        listView.setLayoutManager(new LinearLayoutManager(this));
 
-            }
-        });
         progress_holder.setVisibility(View.GONE);
 
         if (getIntent()!=null && getIntent().hasExtra("terms")){
@@ -103,6 +130,18 @@ public class BookAppointmentActivity extends Activity {
             terms_ar = getIntent().getStringExtra("terms_ar");
         }
 
+
+        try {
+            if (Session.GetLang(BookAppointmentActivity.this).equals("en")) {
+                terms.setText(Html.fromHtml(terms_en));
+                Log.e("ter",terms_en);
+            }else {
+                terms.setText(Html.fromHtml(terms_ar));
+
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
 
         st_bookapp.setText(Session.GetWord(this,"BOOK APPOINTMENT"));
         st_appointment.setText(Session.GetWord(this,"Book Appointments"));
@@ -116,12 +155,36 @@ public class BookAppointmentActivity extends Activity {
         st_booknow.setText(Session.GetWord(this,"BOOK NOW"));
 
 
+        regular = Typeface.createFromAsset(this.getAssets(), "fonts/libel-suit-rg.ttf");
+        regular_arabic = Typeface.createFromAsset(this.getAssets(), "fonts/Hacen Tunisia.ttf");
+
+
+        if (Session.GetLang(this).equals("en")) {
+            fname.setTypeface(regular);
+            lname.setTypeface(regular);
+            mobile.setTypeface(regular);
+            service_option.setTypeface(regular);
+            date.setTypeface(regular);
+            time.setTypeface(regular);
+        }else {
+            fname.setTypeface(regular_arabic);
+            lname.setTypeface(regular_arabic);
+            mobile.setTypeface(regular_arabic);
+            service_option.setTypeface(regular_arabic);
+            date.setTypeface(regular_arabic);
+            time.setTypeface(regular_arabic);
+        }
+
+
 
         if (getIntent()!=null && getIntent().hasExtra("title")){
             service_title = getIntent().getStringExtra("title");
             serv_id = getIntent().getStringExtra("id");
+            Log.e("services_id",serv_id);
         }
+
         service_option.setText(service_title);
+
         date.setOnClickListener(new View.OnClickListener() {
 
             @RequiresApi(api = Build.VERSION_CODES.N)
@@ -134,12 +197,26 @@ public class BookAppointmentActivity extends Activity {
 
                 DatePickerDialog mDatePicker=new DatePickerDialog(BookAppointmentActivity.this, new DatePickerDialog.OnDateSetListener() {
                     public void onDateSet(DatePicker datepicker, int selectedyear, int selectedmonth, int selectedday) {
-                        date.setText(selectedday +"-"+(selectedmonth+1) +"-"+selectedyear);
+                        String day,month;
+                        if (selectedday < 10 ){
+                            day = "0" + String.valueOf(selectedday);
+                        }else {
+                            day = String.valueOf(selectedday);
+                        }
+
+                        if (selectedmonth+1 < 10 ){
+                            month = "0" + String.valueOf(selectedmonth+1);
+                        }else {
+                            month = String.valueOf(selectedmonth+1);
+                        }
+                        date.setText(day +"-"+(month) +"-"+selectedyear);
                     }
                 },mYear, mMonth, mDay);
                 mDatePicker.setTitle("Select date");
                 mDatePicker.show();  }
         });
+
+
         time.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
@@ -162,7 +239,120 @@ public class BookAppointmentActivity extends Activity {
             }
         });
 
+        date_dropdown.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                final Calendar mcurrentDate= Calendar.getInstance();
+                final int mYear = mcurrentDate.get(Calendar.YEAR);
+                final int mMonth = mcurrentDate.get(Calendar.MONTH);
+                final int mDay = mcurrentDate.get(Calendar.DAY_OF_MONTH);
+
+                DatePickerDialog mDatePicker=new DatePickerDialog(BookAppointmentActivity.this, new DatePickerDialog.OnDateSetListener() {
+                    public void onDateSet(DatePicker datepicker, int selectedyear, int selectedmonth, int selectedday) {
+                        date.setText(selectedday +"-"+(selectedmonth+1) +"-"+selectedyear);
+                    }
+                },mYear, mMonth, mDay);
+                mDatePicker.setTitle("Select date");
+                mDatePicker.show();  }
+        });
+
+        date_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                final Calendar mcurrentDate= Calendar.getInstance();
+                final int mYear = mcurrentDate.get(Calendar.YEAR);
+                final int mMonth = mcurrentDate.get(Calendar.MONTH);
+                final int mDay = mcurrentDate.get(Calendar.DAY_OF_MONTH);
+
+                DatePickerDialog mDatePicker=new DatePickerDialog(BookAppointmentActivity.this, new DatePickerDialog.OnDateSetListener() {
+                    public void onDateSet(DatePicker datepicker, int selectedyear, int selectedmonth, int selectedday) {
+                        date.setText(selectedday +"-"+(selectedmonth+1) +"-"+selectedyear);
+                    }
+                },mYear, mMonth, mDay);
+                mDatePicker.setTitle("Select date");
+                mDatePicker.show();  }
+        });
+
+
+        time_dropdown.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Calendar mcurrentTime = Calendar.getInstance();
+                int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
+                int minute = mcurrentTime.get(Calendar.MINUTE);
+                TimePickerDialog mTimePicker;
+                mTimePicker = new TimePickerDialog(BookAppointmentActivity.this, new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
+                        boolean isPM = (selectedHour >= 12);
+                        time.setText(String.format("%02d:%02d %s", (selectedHour == 12 || selectedHour == 0) ? 12 : selectedHour % 12, selectedMinute, isPM ? "PM" : "AM"));
+                    }
+
+                }, hour, minute, true);//Yes 24 hour time
+                mTimePicker.setTitle("Select Time");
+                mTimePicker.show();
+            }
+        });
+
+        time_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Calendar mcurrentTime = Calendar.getInstance();
+                int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
+                int minute = mcurrentTime.get(Calendar.MINUTE);
+                TimePickerDialog mTimePicker;
+                mTimePicker = new TimePickerDialog(BookAppointmentActivity.this, new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
+                        boolean isPM = (selectedHour >= 12);
+                        time.setText(String.format("%02d:%02d %s", (selectedHour == 12 || selectedHour == 0) ? 12 : selectedHour % 12, selectedMinute, isPM ? "PM" : "AM"));
+                    }
+
+                }, hour, minute, true);//Yes 24 hour time
+                mTimePicker.setTitle("Select Time");
+                mTimePicker.show();
+            }
+        });
+
+        search.setText("");
+
+        search.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+                if(addCurrencyAdapter!=null)
+                    addCurrencyAdapter.getFilter().filter(charSequence);
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+
+
+
         service_option.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                popup_view.setVisibility(View.VISIBLE);
+            }
+        });
+
+        services_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                popup_view.setVisibility(View.VISIBLE);
+            }
+        });
+
+        services_dropdown.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 popup_view.setVisibility(View.VISIBLE);
@@ -173,26 +363,57 @@ public class BookAppointmentActivity extends Activity {
             @Override
             public void onClick(View view) {
                 popup_view.setVisibility(View.GONE);
+                View view1 = BookAppointmentActivity.this.getCurrentFocus();
+                if (view1 != null) {
+                    InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(view1.getWindowToken(), 0);
+                }
             }
         });
 
         my_profile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(BookAppointmentActivity.this,EditProfile.class);
-                startActivity(intent);
+                if (Session.GetUserId(BookAppointmentActivity.this).equals("-1")) {
+                    Intent intent = new Intent(BookAppointmentActivity.this, LoginActivity.class);
+                    startActivity(intent);
+                    finish();
+                } else {
+                    Intent intent = new Intent(BookAppointmentActivity.this, MyProfilePage.class);
+                    startActivity(intent);
+                }
             }
         });
 
         st_terms.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(BookAppointmentActivity.this,TermsActivity.class);
-                intent.putExtra("terms",terms_en);
-                intent.putExtra("terms_ar",terms_ar);
-                startActivity(intent);
+                terms_popup.setVisibility(View.VISIBLE);
             }
         });
+
+        cancel_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                terms_popup.setVisibility(View.GONE);
+            }
+        });
+
+
+        save_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+              popup_view.setVisibility(View.GONE);
+                Log.e("select",selectedServices.toString());
+                service_option.setText(TextUtils.join(",", selectedServices));
+                service_id = TextUtils.join(",",servicesnames);
+            }
+        });
+
+        service_id = serv_id;
+
+
+
 
         back_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -209,6 +430,7 @@ public class BookAppointmentActivity extends Activity {
         });
 
         get_categories();
+        get_members();
 
 
     }
@@ -227,6 +449,7 @@ public class BookAppointmentActivity extends Activity {
         String service_string  = serv_id;
         String date_string = date.getText().toString();
         String time_string = time.getText().toString();
+        String phone_string = mobile.getText().toString();
         if (fname_string.equals("")){
             Toast.makeText(BookAppointmentActivity.this,"Please Enter First Name",Toast.LENGTH_SHORT).show();
             fname.requestFocus();
@@ -239,6 +462,9 @@ public class BookAppointmentActivity extends Activity {
         }else if (date_string.equals("")){
             Toast.makeText(BookAppointmentActivity.this,"Please Enter Date",Toast.LENGTH_SHORT).show();
             date.requestFocus();
+        }else if (phone_string.equals("") || !validCellPhone(phone_string) || phone_string.length() < 6 || phone_string.length() > 13){
+            Toast.makeText(BookAppointmentActivity.this,"Please Enter Valid Phone",Toast.LENGTH_SHORT).show();
+            mobile.requestFocus();
         }else if (time_string.equals("")){
             Toast.makeText(BookAppointmentActivity.this,"Please Enter Time",Toast.LENGTH_SHORT).show();
             time.requestFocus();
@@ -261,6 +487,8 @@ public class BookAppointmentActivity extends Activity {
                             try {
                                 if (result.get("status").getAsString().equals("Success")) {
                                     Toast.makeText(BookAppointmentActivity.this, result.get("message").getAsString(), Toast.LENGTH_SHORT).show();
+                                    Intent intent = new Intent(BookAppointmentActivity.this,MainActivity.class);
+                                    startActivity(intent);
                                     finish();
                                 } else {
                                     Toast.makeText(BookAppointmentActivity.this, result.get("message").getAsString(), Toast.LENGTH_SHORT).show();
@@ -273,6 +501,10 @@ public class BookAppointmentActivity extends Activity {
                         }
                     });
         }
+    }
+
+    public boolean validCellPhone(String number){
+        return android.util.Patterns.PHONE.matcher(number).matches();
     }
 
 
@@ -320,6 +552,10 @@ public class BookAppointmentActivity extends Activity {
         if (popup_view!=null){
             popup_view.setVisibility(View.GONE);
         }
+
+        if (terms_popup!=null){
+            terms_popup.setVisibility(View.GONE);
+        }
     }
 
     public void get_categories(){
@@ -345,7 +581,7 @@ public class BookAppointmentActivity extends Activity {
                                 }
                             }
 
-                            popServicesAdapter.notifyDataSetChanged();
+                            addCurrencyAdapter.notifyDataSetChanged();
                         }catch (Exception e1){
                             e1.printStackTrace();
                         }
@@ -379,5 +615,23 @@ public class BookAppointmentActivity extends Activity {
             }
 
         }
+    }
+
+    public void get_members(){
+        Ion.with(BookAppointmentActivity.this)
+                .load(Session.SERVER_URL+"members.php")
+                .setBodyParameter("member_id",Session.GetUserId(BookAppointmentActivity.this))
+                .asJsonArray()
+                .setCallback(new FutureCallback<JsonArray>() {
+                    @Override
+                    public void onCompleted(Exception e, JsonArray result) {
+                        JsonObject jsonObject = result.get(0).getAsJsonObject();
+                        fname.setText(jsonObject.get("fname").getAsString());
+                        lname.setText(jsonObject.get("lname").getAsString());
+                        mobile.setText(jsonObject.get("phone").getAsString());
+
+
+                    }
+                });
     }
 }

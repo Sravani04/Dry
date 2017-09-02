@@ -3,6 +3,7 @@ package com.example.yellowsoft.dry;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
@@ -13,6 +14,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
@@ -27,6 +29,7 @@ public class ContactActivity extends Activity {
     LinearLayout progress_holder;
     TextView st_contactus,st_contact,st_fname,st_lname,st_mobile,st_subject,st_message,st_send;
             RelativeLayout send_btn;
+    Typeface regular,regular_arabic;
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -62,6 +65,24 @@ public class ContactActivity extends Activity {
         st_message.setText(Session.GetWord(this,"MESSAGE"));
         st_send.setText(Session.GetWord(this,"SEND"));
 
+        regular = Typeface.createFromAsset(this.getAssets(), "fonts/libel-suit-rg.ttf");
+        regular_arabic = Typeface.createFromAsset(this.getAssets(), "fonts/Hacen Tunisia.ttf");
+
+
+        if (Session.GetLang(this).equals("en")) {
+            fname.setTypeface(regular);
+            lname.setTypeface(regular);
+            phone.setTypeface(regular);
+            subject.setTypeface(regular);
+            message.setTypeface(regular);
+        }else {
+            fname.setTypeface(regular_arabic);
+            lname.setTypeface(regular_arabic);
+            phone.setTypeface(regular_arabic);
+            subject.setTypeface(regular_arabic);
+            message.setTypeface(regular_arabic);
+        }
+
         send_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -84,11 +105,13 @@ public class ContactActivity extends Activity {
                     startActivity(intent);
                     finish();
                 } else {
-                    Intent intent = new Intent(ContactActivity.this, EditProfile.class);
+                    Intent intent = new Intent(ContactActivity.this, MyProfilePage.class);
                     startActivity(intent);
                 }
             }
         });
+
+        get_members();
     }
 
     public void show_progress(){
@@ -112,7 +135,7 @@ public class ContactActivity extends Activity {
         }else if (lname_string.equals("")){
             Toast.makeText(ContactActivity.this,"Please Enter Last Name",Toast.LENGTH_SHORT).show();
             lname.requestFocus();
-        }else if (phone_string.equals("")){
+        }else if (phone_string.equals("") || !validCellPhone(phone_string) || phone_string.length() < 6 || phone_string.length() > 13){
             Toast.makeText(ContactActivity.this,"Please Enter Phone",Toast.LENGTH_SHORT).show();
             phone.requestFocus();
         }else if (subject_string.equals("")){
@@ -148,5 +171,27 @@ public class ContactActivity extends Activity {
                         }
                     });
         }
+    }
+
+    public boolean validCellPhone(String number){
+        return android.util.Patterns.PHONE.matcher(number).matches();
+    }
+
+    public void get_members(){
+        Ion.with(ContactActivity.this)
+                .load(Session.SERVER_URL+"members.php")
+                .setBodyParameter("member_id",Session.GetUserId(ContactActivity.this))
+                .asJsonArray()
+                .setCallback(new FutureCallback<JsonArray>() {
+                    @Override
+                    public void onCompleted(Exception e, JsonArray result) {
+                        JsonObject jsonObject = result.get(0).getAsJsonObject();
+                        fname.setText(jsonObject.get("fname").getAsString());
+                        lname.setText(jsonObject.get("lname").getAsString());
+                        phone.setText(jsonObject.get("phone").getAsString());
+
+
+                    }
+                });
     }
 }

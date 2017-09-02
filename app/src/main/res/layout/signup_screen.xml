@@ -57,11 +57,10 @@
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/profile_pic"
             android:layout_width="90dp"
-            android:layout_height="90dp"
+            android:layout_height="70dp"
             android:layout_below="@+id/textView10"
             android:layout_centerHorizontal="true"
-            android:adjustViewBounds="false"
-            android:src="@drawable/user_white" />
+            android:adjustViewBounds="false" />
 
 
 
@@ -73,7 +72,7 @@
             android:layout_margin="12dp"
             android:orientation="vertical">
 
-            <com.example.yellowsoft.dry.EditTextRegular
+            <EditText
                 android:id="@+id/fname"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -83,12 +82,12 @@
                 android:hint="FIRST NAME"
                 android:inputType="textPersonName"
                 android:padding="8dp"
+                android:textAlignment="viewStart"
                 android:textColor="#FFFFFF"
                 android:textColorHint="#FFFFFF"
                 android:textColorLink="#FFFFFF"
-                android:textSize="14sp"
-                android:textAlignment="viewStart"
-                android:textCursorDrawable="@null"/>
+                android:textCursorDrawable="@null"
+                android:textSize="16sp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -97,7 +96,7 @@
                 android:background="@drawable/divider"
                 android:orientation="vertical"></LinearLayout>
 
-            <com.example.yellowsoft.dry.EditTextRegular
+            <EditText
                 android:id="@+id/lname"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -107,12 +106,12 @@
                 android:hint="LAST NAME"
                 android:inputType="textPersonName"
                 android:padding="8dp"
+                android:textAlignment="viewStart"
                 android:textColor="#FFFFFF"
                 android:textColorHint="#FFFFFF"
                 android:textColorLink="@color/textColor"
-                android:textSize="14sp"
-                android:textAlignment="viewStart"
-                android:textCursorDrawable="@null"/>
+                android:textCursorDrawable="@null"
+                android:textSize="16sp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -121,7 +120,7 @@
                 android:background="@drawable/divider"
                 android:orientation="vertical"></LinearLayout>
 
-            <com.example.yellowsoft.dry.EditTextRegular
+            <EditText
                 android:id="@+id/email"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -130,12 +129,12 @@
                 android:hint="EMAIL"
                 android:inputType="textPersonName"
                 android:padding="8dp"
+                android:textAlignment="viewStart"
                 android:textColor="#FFFFFF"
                 android:textColorHint="#FFFFFF"
                 android:textColorLink="#FFFFFF"
-                android:textSize="14sp"
-                android:textAlignment="viewStart"
-                android:textCursorDrawable="@null"/>
+                android:textCursorDrawable="@null"
+                android:textSize="16sp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -144,7 +143,7 @@
                 android:background="@drawable/divider"
                 android:orientation="vertical"></LinearLayout>
 
-            <com.example.yellowsoft.dry.EditTextRegular
+            <EditText
                 android:id="@+id/password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -158,7 +157,7 @@
                 android:textColorHint="#FFFFFF"
                 android:textColorLink="@color/textColor"
                 android:textCursorDrawable="@null"
-                android:textSize="14sp" />
+                android:textSize="16sp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -167,21 +166,22 @@
                 android:background="@drawable/divider"
                 android:orientation="vertical"></LinearLayout>
 
-            <com.example.yellowsoft.dry.EditTextRegular
+            <EditText
                 android:id="@+id/phone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@android:color/transparent"
                 android:gravity="start"
-                android:hint="Mobile"
-                android:inputType="phone"
+                android:hint="MOBILE"
+                android:inputType="number|phone"
+                android:maxLength="8"
                 android:padding="8dp"
+                android:textAlignment="viewStart"
                 android:textColor="#FFFFFF"
                 android:textColorHint="#FFFFFF"
                 android:textColorLink="@color/textColor"
-                android:textSize="14sp"
-                android:textAlignment="viewStart"
-                android:textCursorDrawable="@null"/>
+                android:textCursorDrawable="@null"
+                android:textSize="16sp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -202,7 +202,7 @@
             android:gravity="center_vertical|center_horizontal"
             android:text="CREATE ACCOUNT"
             android:textColor="#FFFFFF"
-            android:textSize="12sp" />
+            android:textSize="15sp" />
 
 
         <LinearLayout
