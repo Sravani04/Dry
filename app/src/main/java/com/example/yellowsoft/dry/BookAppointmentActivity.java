@@ -58,7 +58,7 @@ public class BookAppointmentActivity extends Activity {
     EditText fname,lname,search,mobile;
     ArrayList<Category> categoriesfrom_api;
     RelativeLayout booknow_btn;
-    TextView st_bookapp,st_appointment,st_fname,st_lname,st_mobile,st_services,st_date,st_time,st_terms,st_booknow,terms;
+    TextView st_bookapp,st_appointment,st_fname,st_lname,st_mobile,st_services,st_date,st_time,st_terms,st_booknow,terms,st_select_services;
     LinearLayout popup_view,search_service;
     ImageView close_btn;
     RecyclerView listView;
@@ -101,6 +101,7 @@ public class BookAppointmentActivity extends Activity {
         progress_holder = (LinearLayout) findViewById(R.id.progress_holder);
         listView = (RecyclerView) findViewById(R.id.service_list);
         close_btn = (ImageView) findViewById(R.id.close_btn);
+        st_select_services = (TextView) findViewById(R.id.st_select_services);
         search_service = (LinearLayout) findViewById(R.id.search_service);
         progress_holder = (LinearLayout) findViewById(R.id.progress_holder);
         progress_holder.setVisibility(View.GONE);
@@ -153,27 +154,28 @@ public class BookAppointmentActivity extends Activity {
         st_time.setText(Session.GetWord(this,"SELECT TIME"));
         st_terms.setText(Session.GetWord(this,"TERMS AND CONDITIONS"));
         st_booknow.setText(Session.GetWord(this,"BOOK NOW"));
+        st_select_services.setText(Session.GetWord(this,"SELECT SERVICES"));
 
 
-        regular = Typeface.createFromAsset(this.getAssets(), "fonts/libel-suit-rg.ttf");
-        regular_arabic = Typeface.createFromAsset(this.getAssets(), "fonts/Hacen Tunisia.ttf");
+        //regular = Typeface.createFromAsset(this.getAssets(), "fonts/libel-suit-rg.ttf");
+        //regular_arabic = Typeface.createFromAsset(this.getAssets(), "fonts/Hacen Tunisia.ttf");
 
 
-        if (Session.GetLang(this).equals("en")) {
-            fname.setTypeface(regular);
-            lname.setTypeface(regular);
-            mobile.setTypeface(regular);
-            service_option.setTypeface(regular);
-            date.setTypeface(regular);
-            time.setTypeface(regular);
-        }else {
-            fname.setTypeface(regular_arabic);
-            lname.setTypeface(regular_arabic);
-            mobile.setTypeface(regular_arabic);
-            service_option.setTypeface(regular_arabic);
-            date.setTypeface(regular_arabic);
-            time.setTypeface(regular_arabic);
-        }
+//        if (Session.GetLang(this).equals("en")) {
+//            fname.setTypeface(regular);
+//            lname.setTypeface(regular);
+//            mobile.setTypeface(regular);
+//            service_option.setTypeface(regular);
+//            date.setTypeface(regular);
+//            time.setTypeface(regular);
+//        }else {
+//            fname.setTypeface(regular_arabic);
+//            lname.setTypeface(regular_arabic);
+//            mobile.setTypeface(regular_arabic);
+//            service_option.setTypeface(regular_arabic);
+//            date.setTypeface(regular_arabic);
+//            time.setTypeface(regular_arabic);
+//        }
 
 
 
@@ -249,7 +251,19 @@ public class BookAppointmentActivity extends Activity {
 
                 DatePickerDialog mDatePicker=new DatePickerDialog(BookAppointmentActivity.this, new DatePickerDialog.OnDateSetListener() {
                     public void onDateSet(DatePicker datepicker, int selectedyear, int selectedmonth, int selectedday) {
-                        date.setText(selectedday +"-"+(selectedmonth+1) +"-"+selectedyear);
+                        String day,month;
+                        if (selectedday < 10 ){
+                            day = "0" + String.valueOf(selectedday);
+                        }else {
+                            day = String.valueOf(selectedday);
+                        }
+
+                        if (selectedmonth+1 < 10 ){
+                            month = "0" + String.valueOf(selectedmonth+1);
+                        }else {
+                            month = String.valueOf(selectedmonth+1);
+                        }
+                        date.setText(day +"-"+(month) +"-"+selectedyear);
                     }
                 },mYear, mMonth, mDay);
                 mDatePicker.setTitle("Select date");
@@ -266,7 +280,19 @@ public class BookAppointmentActivity extends Activity {
 
                 DatePickerDialog mDatePicker=new DatePickerDialog(BookAppointmentActivity.this, new DatePickerDialog.OnDateSetListener() {
                     public void onDateSet(DatePicker datepicker, int selectedyear, int selectedmonth, int selectedday) {
-                        date.setText(selectedday +"-"+(selectedmonth+1) +"-"+selectedyear);
+                        String day,month;
+                        if (selectedday < 10 ){
+                            day = "0" + String.valueOf(selectedday);
+                        }else {
+                            day = String.valueOf(selectedday);
+                        }
+
+                        if (selectedmonth+1 < 10 ){
+                            month = "0" + String.valueOf(selectedmonth+1);
+                        }else {
+                            month = String.valueOf(selectedmonth+1);
+                        }
+                        date.setText(day +"-"+(month) +"-"+selectedyear);
                     }
                 },mYear, mMonth, mDay);
                 mDatePicker.setTitle("Select date");

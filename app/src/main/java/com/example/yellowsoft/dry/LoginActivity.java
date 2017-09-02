@@ -51,8 +51,8 @@ public class LoginActivity extends Activity {
             }
         });
 
-        regular = Typeface.createFromAsset(this.getAssets(), "fonts/libel-suit-rg.ttf");
-        regular_arabic = Typeface.createFromAsset(this.getAssets(), "fonts/Hacen Tunisia.ttf");
+        //regular = Typeface.createFromAsset(this.getAssets(), "fonts/libel-suit-rg.ttf");
+        //regular_arabic = Typeface.createFromAsset(this.getAssets(), "fonts/Hacen Tunisia.ttf");
 
         st_login.setText(Session.GetWord(this,"LOGIN"));
         email.setHint(Session.GetWord(this,"Email Address"));
@@ -61,13 +61,13 @@ public class LoginActivity extends Activity {
         login_btn.setText(Session.GetWord(this,"LOGIN"));
         forget_pwd.setText(Session.GetWord(this,"FORGOT PASSWORD"));
 
-        if (Session.GetLang(this).equals("en")) {
-            email.setTypeface(regular);
-            password.setTypeface(regular);
-        }else {
-            email.setTypeface(regular_arabic);
-            password.setTypeface(regular_arabic);
-        }
+//        if (Session.GetLang(this).equals("en")) {
+//            email.setTypeface(regular);
+//            password.setTypeface(regular);
+//        }else {
+//            email.setTypeface(regular_arabic);
+//            password.setTypeface(regular_arabic);
+//        }
 
         forget_pwd.setOnClickListener(new View.OnClickListener() {
             @Override

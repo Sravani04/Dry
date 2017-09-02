@@ -209,7 +209,8 @@
                                             android:gravity="start"
                                             android:padding="5dp"
                                             android:textAlignment="viewStart"
-                                            android:textColor="@color/textColor" />
+                                            android:textColor="@color/textColor"
+                                            android:textSize="15sp"/>
 
                                         <ImageView
                                             android:id="@+id/services_dropdown"
@@ -251,7 +252,8 @@
                                             android:inputType="textPersonName"
                                             android:padding="5dp"
                                             android:textAlignment="viewStart"
-                                            android:textColor="@color/textColor" />
+                                            android:textColor="@color/textColor"
+                                            android:textSize="15sp"/>
 
                                         <ImageView
                                             android:id="@+id/date_dropdown"
@@ -292,7 +294,8 @@
                                             android:inputType="textPersonName"
                                             android:padding="5dp"
                                             android:textAlignment="viewStart"
-                                            android:textColor="@color/textColor" />
+                                            android:textColor="@color/textColor"
+                                            android:textSize="15sp"/>
 
                                         <ImageView
                                             android:id="@+id/time_dropdown"
@@ -411,7 +414,7 @@
                     android:src="@drawable/cancel" />
 
                 <com.example.yellowsoft.dry.TextViewBold
-                    android:id="@+id/textView5"
+                    android:id="@+id/st_select_services"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_weight="1"

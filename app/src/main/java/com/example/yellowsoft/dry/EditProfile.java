@@ -77,10 +77,10 @@ public class EditProfile extends Activity {
         progress_holder.setVisibility(View.GONE);
       //  logout_btn = (TextView) findViewById(R.id.logout_btn);
 
-        bold = Typeface.createFromAsset(this.getAssets(), "fonts/libel-suit-rg.ttf");
-        bold_arabic = Typeface.createFromAsset(this.getAssets(), "fonts/Hacen Tunisia Bd.ttf");
-        regular = Typeface.createFromAsset(this.getAssets(), "fonts/libel-suit-rg.ttf");
-        regular_arabic = Typeface.createFromAsset(this.getAssets(), "fonts/Hacen Tunisia.ttf");
+//        bold = Typeface.createFromAsset(this.getAssets(), "fonts/libel-suit-rg.ttf");
+//        bold_arabic = Typeface.createFromAsset(this.getAssets(), "fonts/Hacen Tunisia Bd.ttf");
+//        regular = Typeface.createFromAsset(this.getAssets(), "fonts/libel-suit-rg.ttf");
+//        regular_arabic = Typeface.createFromAsset(this.getAssets(), "fonts/Hacen Tunisia.ttf");
 
         st_profile.setText(Session.GetWord(this,"PROFILE"));
         fname.setHint(Session.GetWord(this,"FIRST NAME"));
@@ -114,17 +114,17 @@ public class EditProfile extends Activity {
             }
         });
 
-        if (Session.GetLang(this).equals("en")) {
-            fname.setTypeface(regular);
-            lname.setTypeface(regular);
-            email.setTypeface(regular);
-            phone.setTypeface(regular);
-        }else {
-            fname.setTypeface(regular_arabic);
-            lname.setTypeface(regular_arabic);
-            email.setTypeface(regular_arabic);
-            phone.setTypeface(regular_arabic);
-        }
+//        if (Session.GetLang(this).equals("en")) {
+//            fname.setTypeface(regular);
+//            lname.setTypeface(regular);
+//            email.setTypeface(regular);
+//            phone.setTypeface(regular);
+//        }else {
+//            fname.setTypeface(regular_arabic);
+//            lname.setTypeface(regular_arabic);
+//            email.setTypeface(regular_arabic);
+//            phone.setTypeface(regular_arabic);
+//        }
 
 //        logout_btn.setOnClickListener(new View.OnClickListener() {
 //            @Override

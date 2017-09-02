@@ -72,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
     MainActivityAdapter adapter;
     private static int currentPage = 0;
     Timer timer;
-    TextView title;
+    TextView title,st_select_services;
     ArrayList<Banners> bannersfrom_api;
     CategoryAdapter categoryAdapter;
     ArrayList<Category> categoriesfrom_api;
@@ -167,6 +167,7 @@ public class MainActivity extends AppCompatActivity {
         title = (TextView) findViewById(R.id.title);
         //ad_image = (ImageView) findViewById(R.id.ad_image);
         arabic_btn = (TextView) findViewById(R.id.arabic_btn);
+        st_select_services = (TextView) findViewById(R.id.st_select_services);
         st_bookapp = (TextView) findViewById(R.id.st_bookapp);
         st_services = (TextView) findViewById(R.id.st_services);
         price = (TextView) findViewById(R.id.price);
@@ -274,6 +275,7 @@ public class MainActivity extends AppCompatActivity {
         profile_btn.setText(Session.GetWord(this,"MY PROFILE"));
         contact_btn.setText(Session.GetWord(this,"CONTACT US"));
         arabic_btn.setText(Session.GetWord(this,"ARABIC"));
+        st_select_services.setText(Session.GetWord(this,"SELECT SERVICES"));
 
 
 

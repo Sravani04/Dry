@@ -91,23 +91,23 @@ public class SignInActivity extends Activity {
         phone.setHint(Session.GetWord(this,"MOBILE"));
         signin_btn.setText(Session.GetWord(this,"CREATE ACCOUNT"));
 
-        regular = Typeface.createFromAsset(this.getAssets(), "fonts/libel-suit-rg.ttf");
-        regular_arabic = Typeface.createFromAsset(this.getAssets(), "fonts/Hacen Tunisia.ttf");
-
-
-        if (Session.GetLang(this).equals("en")) {
-            fname.setTypeface(regular);
-            lname.setTypeface(regular);
-            phone.setTypeface(regular);
-            email.setTypeface(regular);
-            password.setTypeface(regular);
-        }else {
-            fname.setTypeface(regular_arabic);
-            lname.setTypeface(regular_arabic);
-            phone.setTypeface(regular_arabic);
-            email.setTypeface(regular_arabic);
-            password.setTypeface(regular_arabic);
-        }
+//        regular = Typeface.createFromAsset(this.getAssets(), "fonts/libel-suit-rg.ttf");
+//        regular_arabic = Typeface.createFromAsset(this.getAssets(), "fonts/Hacen Tunisia.ttf");
+//
+//
+//        if (Session.GetLang(this).equals("en")) {
+//            fname.setTypeface(regular);
+//            lname.setTypeface(regular);
+//            phone.setTypeface(regular);
+//            email.setTypeface(regular);
+//            password.setTypeface(regular);
+//        }else {
+//            fname.setTypeface(regular_arabic);
+//            lname.setTypeface(regular_arabic);
+//            phone.setTypeface(regular_arabic);
+//            email.setTypeface(regular_arabic);
+//            password.setTypeface(regular_arabic);
+//        }
 
 
 

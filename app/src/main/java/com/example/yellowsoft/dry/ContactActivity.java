@@ -65,23 +65,23 @@ public class ContactActivity extends Activity {
         st_message.setText(Session.GetWord(this,"MESSAGE"));
         st_send.setText(Session.GetWord(this,"SEND"));
 
-        regular = Typeface.createFromAsset(this.getAssets(), "fonts/libel-suit-rg.ttf");
-        regular_arabic = Typeface.createFromAsset(this.getAssets(), "fonts/Hacen Tunisia.ttf");
+        //regular = Typeface.createFromAsset(this.getAssets(), "fonts/libel-suit-rg.ttf");
+        //regular_arabic = Typeface.createFromAsset(this.getAssets(), "fonts/Hacen Tunisia.ttf");
 
 
-        if (Session.GetLang(this).equals("en")) {
-            fname.setTypeface(regular);
-            lname.setTypeface(regular);
-            phone.setTypeface(regular);
-            subject.setTypeface(regular);
-            message.setTypeface(regular);
-        }else {
-            fname.setTypeface(regular_arabic);
-            lname.setTypeface(regular_arabic);
-            phone.setTypeface(regular_arabic);
-            subject.setTypeface(regular_arabic);
-            message.setTypeface(regular_arabic);
-        }
+//        if (Session.GetLang(this).equals("en")) {
+//            fname.setTypeface(regular);
+//            lname.setTypeface(regular);
+//            phone.setTypeface(regular);
+//            subject.setTypeface(regular);
+//            message.setTypeface(regular);
+//        }else {
+//            fname.setTypeface(regular_arabic);
+//            lname.setTypeface(regular_arabic);
+//            phone.setTypeface(regular_arabic);
+//            subject.setTypeface(regular_arabic);
+//            message.setTypeface(regular_arabic);
+//        }
 
         send_btn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -185,10 +185,15 @@ public class ContactActivity extends Activity {
                 .setCallback(new FutureCallback<JsonArray>() {
                     @Override
                     public void onCompleted(Exception e, JsonArray result) {
-                        JsonObject jsonObject = result.get(0).getAsJsonObject();
-                        fname.setText(jsonObject.get("fname").getAsString());
-                        lname.setText(jsonObject.get("lname").getAsString());
-                        phone.setText(jsonObject.get("phone").getAsString());
+                        try {
+                            JsonObject jsonObject = result.get(0).getAsJsonObject();
+                            fname.setText(jsonObject.get("fname").getAsString());
+                            lname.setText(jsonObject.get("lname").getAsString());
+                            phone.setText(jsonObject.get("phone").getAsString());
+                        }catch (Exception e1){
+                            e1.printStackTrace();
+                        }
+
 
 
                     }

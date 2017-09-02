@@ -42,8 +42,13 @@ public class EditTextRegular  extends EditText {
     private void init(Context context) {
         if (!isInEditMode()) {
 
-            Typeface tf = Typeface.createFromAsset(getContext().getAssets(), "fonts/OpenSans-Regular.ttf");
-            setTypeface(tf);
+            if (Session.GetLang(context).equals("en")) {
+                Typeface tf = Typeface.createFromAsset(getContext().getAssets(), "fonts/libel-suit-rg.ttf");
+                setTypeface(tf);
+            }else {
+                Typeface tf_arabic = Typeface.createFromAsset(getContext().getAssets(), "fonts/Hacen Tunisia.ttf");
+                setTypeface(tf_arabic);
+            }
 
 
 

@@ -45,8 +45,8 @@ public class ChangePasswordPage extends Activity {
             }
         });
 
-        regular = Typeface.createFromAsset(this.getAssets(), "fonts/libel-suit-rg.ttf");
-        regular_arabic = Typeface.createFromAsset(this.getAssets(), "fonts/Hacen Tunisia.ttf");
+//        regular = Typeface.createFromAsset(this.getAssets(), "fonts/libel-suit-rg.ttf");
+//        regular_arabic = Typeface.createFromAsset(this.getAssets(), "fonts/Hacen Tunisia.ttf");
 
         old_password.setHint(Session.GetWord(this,"ENTER OLD PASSWORD"));
         password.setHint(Session.GetWord(this,"PASSWORD"));
@@ -55,15 +55,15 @@ public class ChangePasswordPage extends Activity {
         st_cpassword.setText(Session.GetWord(this,"CHANGE PASSWORD"));
 
 
-        if (Session.GetLang(this).equals("en")) {
-            old_password.setTypeface(regular);
-            password.setTypeface(regular);
-            confirm_password.setTypeface(regular);
-        }else {
-            old_password.setTypeface(regular_arabic);
-            password.setTypeface(regular_arabic);
-            confirm_password.setTypeface(regular_arabic);
-        }
+//        if (Session.GetLang(this).equals("en")) {
+//            old_password.setTypeface(regular);
+//            password.setTypeface(regular);
+//            confirm_password.setTypeface(regular);
+//        }else {
+//            old_password.setTypeface(regular_arabic);
+//            password.setTypeface(regular_arabic);
+//            confirm_password.setTypeface(regular_arabic);
+//        }
 
 
         back_btn.setOnClickListener(new View.OnClickListener() {
