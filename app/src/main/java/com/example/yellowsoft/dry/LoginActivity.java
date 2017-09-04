@@ -106,6 +106,8 @@ public class LoginActivity extends Activity {
         progress_holder.setVisibility(View.GONE);
     }
 
+
+
     public void login(){
         String email_string = email.getText().toString();
         String password_string = password.getText().toString();

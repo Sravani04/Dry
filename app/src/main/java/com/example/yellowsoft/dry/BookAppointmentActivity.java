@@ -27,6 +27,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
+import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -43,8 +44,10 @@ import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
 
 import java.io.File;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 
 /**
  * Created by yellowsoft on 7/8/17.
@@ -64,7 +67,7 @@ public class BookAppointmentActivity extends Activity {
     RecyclerView listView;
     PopServicesAdapter popServicesAdapter;
     String serv_title,service_id,terms_en,terms_ar;
-    LinearLayout services_btn,date_btn,time_btn,terms_popup;
+    LinearLayout services_btn,date_btn,time_btn,terms_popup,check_term;
     ImageView services_dropdown,date_dropdown,time_dropdown;
     String first_name,last_name,phone;
     ArrayList<String> selectedServices;
@@ -72,6 +75,8 @@ public class BookAppointmentActivity extends Activity {
     AddCurrencyAdapter addCurrencyAdapter;
     ImageView save_btn;
     Typeface regular,regular_arabic;
+    CheckBox checked;
+    boolean CurentDate=true;
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -114,8 +119,10 @@ public class BookAppointmentActivity extends Activity {
         date_dropdown = (ImageView) findViewById(R.id.date_dropdown);
         time_dropdown = (ImageView) findViewById(R.id.time_dropdown);
         terms_popup = (LinearLayout) findViewById(R.id.terms_popup);
+        check_term = (LinearLayout) findViewById(R.id.check_term);
         save_btn = (ImageView) findViewById(R.id.save_btn);
         terms = (TextView) findViewById(R.id.terms);
+        checked = (CheckBox) findViewById(R.id.checked);
         categoriesfrom_api = new ArrayList<>();
         selectedServices = new ArrayList<>();
         servicesnames = new ArrayList<>();
@@ -123,6 +130,8 @@ public class BookAppointmentActivity extends Activity {
         listView.setAdapter(addCurrencyAdapter);
         listView.setHasFixedSize(true);
         listView.setLayoutManager(new LinearLayoutManager(this));
+        service_id = "";
+        service_title = "";
 
         progress_holder.setVisibility(View.GONE);
 
@@ -181,11 +190,15 @@ public class BookAppointmentActivity extends Activity {
 
         if (getIntent()!=null && getIntent().hasExtra("title")){
             service_title = getIntent().getStringExtra("title");
-            serv_id = getIntent().getStringExtra("id");
-            Log.e("services_id",serv_id);
+            service_id = getIntent().getStringExtra("id");
+            Log.e("services_id",service_id);
+            service_option.setText(service_title);
+            selectedServices.add(service_title);
+            servicesnames.add(service_id);
         }
 
-        service_option.setText(service_title);
+
+
 
         date.setOnClickListener(new View.OnClickListener() {
 
@@ -212,29 +225,49 @@ public class BookAppointmentActivity extends Activity {
                             month = String.valueOf(selectedmonth+1);
                         }
                         date.setText(day +"-"+(month) +"-"+selectedyear);
+                        if (mDay == selectedday && mMonth == selectedmonth && mYear == selectedyear){
+                            CurentDate = true;
+                        }else {
+                            CurentDate = false;
+                        }
                     }
                 },mYear, mMonth, mDay);
+                mDatePicker.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
                 mDatePicker.setTitle("Select date");
                 mDatePicker.show();  }
         });
+
 
 
         time.setOnClickListener(new View.OnClickListener() {
             @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onClick(View view) {
-                Calendar mcurrentTime = Calendar.getInstance();
-                int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
-                int minute = mcurrentTime.get(Calendar.MINUTE);
+                final Calendar mcurrentTime = Calendar.getInstance();
+                final int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
+                final int minute = mcurrentTime.get(Calendar.MINUTE);
                 TimePickerDialog mTimePicker;
                 mTimePicker = new TimePickerDialog(BookAppointmentActivity.this, new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
                         boolean isPM = (selectedHour >= 12);
-                        time.setText(String.format("%02d:%02d %s", (selectedHour == 12 || selectedHour == 0) ? 12 : selectedHour % 12, selectedMinute, isPM ? "PM" : "AM"));
+                        if (CurentDate) {
+                            if ((hour <= selectedHour) &&
+                                    (minute <= selectedMinute)) {
+                                time.setText(String.format("%02d:%02d %s", (selectedHour == 12 || selectedHour == 0) ? 12 : selectedHour % 12, selectedMinute, isPM ? "PM" : "AM"));
+                            } else {
+                                Toast.makeText(BookAppointmentActivity.this, "Selected Wrong Time.",
+                                        Toast.LENGTH_SHORT).show();
+                            }
+                        }else {
+                            time.setText(String.format("%02d:%02d %s", (selectedHour == 12 || selectedHour == 0) ? 12 : selectedHour % 12, selectedMinute, isPM ? "PM" : "AM"));
+
+                        }
                     }
 
                 }, hour, minute, true);//Yes 24 hour time
+
+
                 mTimePicker.setTitle("Select Time");
                 mTimePicker.show();
 
@@ -264,8 +297,14 @@ public class BookAppointmentActivity extends Activity {
                             month = String.valueOf(selectedmonth+1);
                         }
                         date.setText(day +"-"+(month) +"-"+selectedyear);
+                        if (mDay == selectedday && mMonth == selectedmonth && mYear == selectedyear){
+                            CurentDate = true;
+                        }else {
+                            CurentDate = false;
+                        }
                     }
                 },mYear, mMonth, mDay);
+                mDatePicker.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
                 mDatePicker.setTitle("Select date");
                 mDatePicker.show();  }
         });
@@ -293,8 +332,14 @@ public class BookAppointmentActivity extends Activity {
                             month = String.valueOf(selectedmonth+1);
                         }
                         date.setText(day +"-"+(month) +"-"+selectedyear);
+                        if (mDay == selectedday && mMonth == selectedmonth && mYear == selectedyear){
+                            CurentDate = true;
+                        }else {
+                            CurentDate = false;
+                        }
                     }
                 },mYear, mMonth, mDay);
+                mDatePicker.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
                 mDatePicker.setTitle("Select date");
                 mDatePicker.show();  }
         });
@@ -303,15 +348,26 @@ public class BookAppointmentActivity extends Activity {
         time_dropdown.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Calendar mcurrentTime = Calendar.getInstance();
-                int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
-                int minute = mcurrentTime.get(Calendar.MINUTE);
+                final Calendar mcurrentTime = Calendar.getInstance();
+                final int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
+                final int minute = mcurrentTime.get(Calendar.MINUTE);
                 TimePickerDialog mTimePicker;
                 mTimePicker = new TimePickerDialog(BookAppointmentActivity.this, new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
                         boolean isPM = (selectedHour >= 12);
-                        time.setText(String.format("%02d:%02d %s", (selectedHour == 12 || selectedHour == 0) ? 12 : selectedHour % 12, selectedMinute, isPM ? "PM" : "AM"));
+                        if (CurentDate) {
+                            if ((hour <= selectedHour) &&
+                                    (minute <= selectedMinute)) {
+                                time.setText(String.format("%02d:%02d %s", (selectedHour == 12 || selectedHour == 0) ? 12 : selectedHour % 12, selectedMinute, isPM ? "PM" : "AM"));
+                            } else {
+                                Toast.makeText(BookAppointmentActivity.this, "Selected Wrong Time.",
+                                        Toast.LENGTH_SHORT).show();
+                            }
+                        }else {
+                            time.setText(String.format("%02d:%02d %s", (selectedHour == 12 || selectedHour == 0) ? 12 : selectedHour % 12, selectedMinute, isPM ? "PM" : "AM"));
+
+                        }
                     }
 
                 }, hour, minute, true);//Yes 24 hour time
@@ -324,14 +380,24 @@ public class BookAppointmentActivity extends Activity {
             @Override
             public void onClick(View view) {
                 Calendar mcurrentTime = Calendar.getInstance();
-                int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
-                int minute = mcurrentTime.get(Calendar.MINUTE);
+                final int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
+                final int minute = mcurrentTime.get(Calendar.MINUTE);
                 TimePickerDialog mTimePicker;
                 mTimePicker = new TimePickerDialog(BookAppointmentActivity.this, new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
                         boolean isPM = (selectedHour >= 12);
-                        time.setText(String.format("%02d:%02d %s", (selectedHour == 12 || selectedHour == 0) ? 12 : selectedHour % 12, selectedMinute, isPM ? "PM" : "AM"));
+                        if (CurentDate) {
+                            if ((hour <= selectedHour) &&
+                                    (minute <= selectedMinute)) {
+                                time.setText(String.format("%02d:%02d %s", (selectedHour == 12 || selectedHour == 0) ? 12 : selectedHour % 12, selectedMinute, isPM ? "PM" : "AM"));
+                            } else {
+                                Toast.makeText(BookAppointmentActivity.this, "Selected Wrong Time.",
+                                        Toast.LENGTH_SHORT).show();
+                            }
+                        }else {
+                            time.setText(String.format("%02d:%02d %s", (selectedHour == 12 || selectedHour == 0) ? 12 : selectedHour % 12, selectedMinute, isPM ? "PM" : "AM"));
+                        }
                     }
 
                 }, hour, minute, true);//Yes 24 hour time
@@ -436,7 +502,7 @@ public class BookAppointmentActivity extends Activity {
             }
         });
 
-        service_id = serv_id;
+
 
 
 
@@ -461,6 +527,23 @@ public class BookAppointmentActivity extends Activity {
 
     }
 
+   
+
+    private static String pad(int c) {
+        if (c >= 10)
+            return String.valueOf(c);
+        else
+            return "0" + String.valueOf(c);
+    }
+
+
+
+
+
+
+
+
+
     public void show_progress(){
         progress_holder.setVisibility(View.VISIBLE);
     }
@@ -472,7 +555,7 @@ public class BookAppointmentActivity extends Activity {
     public void add_appointment(){
         String fname_string = fname.getText().toString();
         String lname_string = lname.getText().toString();
-        String service_string  = serv_id;
+        String service_string  = service_id;
         String date_string = date.getText().toString();
         String time_string = time.getText().toString();
         String phone_string = mobile.getText().toString();
@@ -482,7 +565,7 @@ public class BookAppointmentActivity extends Activity {
         }else if (lname_string.equals("")){
             Toast.makeText(BookAppointmentActivity.this,"Please Enter Last Name",Toast.LENGTH_SHORT).show();
             lname.requestFocus();
-        }else if (service_string == ""){
+        }else if (service_string.equals("")){
             Toast.makeText(BookAppointmentActivity.this,"Please Enter Service Id",Toast.LENGTH_SHORT).show();
             service_option.requestFocus();
         }else if (date_string.equals("")){
@@ -494,7 +577,9 @@ public class BookAppointmentActivity extends Activity {
         }else if (time_string.equals("")){
             Toast.makeText(BookAppointmentActivity.this,"Please Enter Time",Toast.LENGTH_SHORT).show();
             time.requestFocus();
-        }else {
+        }else if (!checked.isChecked()){
+            Toast.makeText(BookAppointmentActivity.this,"Please Accept Terms and Conditions",Toast.LENGTH_SHORT).show();
+        }else  {
             show_progress();
             Ion.with(this)
                     .load(Session.SERVER_URL + "add-appointment.php")

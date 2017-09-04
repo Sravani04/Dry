@@ -263,7 +263,15 @@ public class MainActivity extends AppCompatActivity {
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                if(categoriesfrom_api.get(i).type.equals("0")){
 
+                }else {
+                    Intent intent = new Intent(MainActivity.this, ServiceDetail.class);
+                    intent.putExtra("services", categoriesfrom_api.get(i));
+                    intent.putExtra("terms",term_en);
+                    intent.putExtra("terms_ar",term_ar);
+                    startActivity(intent);
+                }
             }
         });
 

@@ -78,14 +78,14 @@ public class AddCurrencyAdapter extends RecyclerView.Adapter<AddCurrencyAdapter.
             if(moviesList.get(getAdapterPosition()).type.equals("0")){
 
             }else {
-                if (!activity.selectedServices.contains(moviesList.get(getAdapterPosition()).title)) {
+                if (!activity.servicesnames.contains(moviesList.get(getAdapterPosition()).id)) {
 
                     activity.selectedServices.add(moviesList.get(getAdapterPosition()).title);
                     activity.servicesnames.add(moviesList.get(getAdapterPosition()).id);
                     selected_tick.setVisibility(View.VISIBLE);
                 } else {
                     activity.selectedServices.remove(moviesList.get(getAdapterPosition()).title);
-                    activity.servicesnames.add(moviesList.get(getAdapterPosition()).id);
+                    activity.servicesnames.remove(moviesList.get(getAdapterPosition()).id);
                     selected_tick.setVisibility(View.INVISIBLE);
 
                 }
@@ -139,14 +139,14 @@ public class AddCurrencyAdapter extends RecyclerView.Adapter<AddCurrencyAdapter.
                 if(moviesList.get(position).type.equals("0")){
 
                 }else {
-                    if (!activity.selectedServices.contains(moviesList.get(position).title)) {
+                    if (!activity.servicesnames.contains(moviesList.get(position).id)) {
 
                         activity.selectedServices.add(moviesList.get(position).title);
                         activity.servicesnames.add(moviesList.get(position).id);
                         holder.selected_tick.setVisibility(View.VISIBLE);
                     } else {
                         activity.selectedServices.remove(moviesList.get(position).title);
-                        activity.servicesnames.add(moviesList.get(position).id);
+                        activity.servicesnames.remove(moviesList.get(position).id);
                         holder.selected_tick.setVisibility(View.INVISIBLE);
 
                     }
@@ -176,7 +176,7 @@ public class AddCurrencyAdapter extends RecyclerView.Adapter<AddCurrencyAdapter.
 
         }
 
-        if(activity.selectedServices.contains(moviesList.get(position).title)){
+        if(activity.servicesnames.contains(moviesList.get(position).id)){
 
             holder.selected_tick.setVisibility(View.VISIBLE);
         }else{
