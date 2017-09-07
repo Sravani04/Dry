@@ -284,6 +284,7 @@ public class MainActivity extends AppCompatActivity {
         contact_btn.setText(Session.GetWord(this,"CONTACT US"));
         arabic_btn.setText(Session.GetWord(this,"ARABIC"));
         st_select_services.setText(Session.GetWord(this,"SELECT SERVICES"));
+        search.setHint(Session.GetWord(this,"Search Services"));
 
 
 

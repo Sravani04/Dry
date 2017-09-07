@@ -9,7 +9,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    >
+    tools:openDrawer="start">
 
     <RelativeLayout
         android:id="@+id/mainView"
@@ -473,7 +473,6 @@
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_above="@+id/footer_slide"
                     android:layout_below="@+id/space"
                     android:layout_margin="10dp">
 

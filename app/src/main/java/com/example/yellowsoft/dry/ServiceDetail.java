@@ -5,8 +5,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Html;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -20,10 +23,11 @@ import java.util.Locale;
  */
 
 public class ServiceDetail extends Activity {
-    TextView title,service_title,service_description,service_price,service_duration;
-    ImageView service_image,book_now,back_btn,my_profile;
+    TextView title,service_title,service_description,service_price,service_duration,st_price,st_duration,st_bookservice;
+    ImageView service_image,back_btn,my_profile,topbar;
     Category services;
     String terms_en,terms_ar;
+    RelativeLayout book_now;
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
@@ -34,11 +38,15 @@ public class ServiceDetail extends Activity {
         service_title = (TextView) findViewById(R.id.service_title);
         service_description = (TextView) findViewById(R.id.service_description);
         service_image = (ImageView) findViewById(R.id.service_image);
-        book_now = (ImageView) findViewById(R.id.book_now);
+        book_now = (RelativeLayout) findViewById(R.id.book_now);
         back_btn = (ImageView) findViewById(R.id.back_btn);
         my_profile = (ImageView) findViewById(R.id.my_profile);
         service_price = (TextView) findViewById(R.id.service_price);
         service_duration = (TextView) findViewById(R.id.service_duration);
+        st_price = (TextView) findViewById(R.id.st_price);
+        st_duration = (TextView) findViewById(R.id.st_duration);
+        st_bookservice = (TextView) findViewById(R.id.st_bookservice);
+        topbar = (ImageView) findViewById(R.id.topbar);
 
 
         if (getIntent()!=null && getIntent().hasExtra("services")){
@@ -56,6 +64,9 @@ public class ServiceDetail extends Activity {
         service_price.setText(services.price + " " + "KD");
         service_duration.setText(services.duration);
         Glide.with(this).load(services.image).placeholder(R.drawable.placeholder500x250).into(service_image);
+        st_price.setText(Session.GetWord(ServiceDetail.this,"PRICE"));
+        st_duration.setText(Session.GetWord(ServiceDetail.this,"DURATION"));
+        st_bookservice.setText(Session.GetWord(ServiceDetail.this,"BOOK SERVICE"));
 
 
         book_now.setOnClickListener(new View.OnClickListener() {
@@ -83,6 +94,8 @@ public class ServiceDetail extends Activity {
             }
         });
 
+
+
         my_profile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -96,6 +109,7 @@ public class ServiceDetail extends Activity {
                 }
             }
         });
+
 
     }
 }

@@ -97,7 +97,7 @@ public class ServicesPageAdapter extends BaseAdapter implements Filterable {
 
             if (Session.GetLang(context).equals("en")) {
 
-                category_title.setTypeface(regular);
+                category_title.setTypeface(regular,Typeface.NORMAL);
             }else {
                 category_title.setTypeface(regular_arabic);
             }

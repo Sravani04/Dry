@@ -176,7 +176,7 @@ public class AddCurrencyAdapter extends RecyclerView.Adapter<AddCurrencyAdapter.
 
         }
 
-        if(activity.servicesnames.contains(moviesList.get(position).id)){
+        if(moviesList.get(position).type.equals("1") && activity.servicesnames.contains(moviesList.get(position).id)){
 
             holder.selected_tick.setVisibility(View.VISIBLE);
         }else{

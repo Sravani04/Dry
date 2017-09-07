@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
-import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -40,8 +39,10 @@ import android.widget.Toast;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.koushikdutta.async.future.FutureCallback;
 import com.koushikdutta.ion.Ion;
+import com.wdullaer.materialdatetimepicker.time.Timepoint;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -53,7 +54,7 @@ import java.util.Date;
  * Created by yellowsoft on 7/8/17.
  */
 
-public class BookAppointmentActivity extends Activity {
+public class BookAppointmentActivity extends Activity implements com.wdullaer.materialdatetimepicker.time.TimePickerDialog.OnTimeSetListener {
     ImageView back_btn,my_profile,cancel_btn;
     String service_title,serv_id;
     TextView service_option,date,time;
@@ -77,6 +78,11 @@ public class BookAppointmentActivity extends Activity {
     Typeface regular,regular_arabic;
     CheckBox checked;
     boolean CurentDate=true;
+    String workingHours;
+    int hour,min,hours,mins;
+    RelativeLayout accept_btn;
+    TextView st_accept;
+
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -132,6 +138,8 @@ public class BookAppointmentActivity extends Activity {
         listView.setLayoutManager(new LinearLayoutManager(this));
         service_id = "";
         service_title = "";
+        accept_btn = (RelativeLayout) findViewById(R.id.accept_btn);
+        st_accept = (TextView) findViewById(R.id.st_accept);
 
         progress_holder.setVisibility(View.GONE);
 
@@ -141,17 +149,17 @@ public class BookAppointmentActivity extends Activity {
         }
 
 
-        try {
-            if (Session.GetLang(BookAppointmentActivity.this).equals("en")) {
-                terms.setText(Html.fromHtml(terms_en));
-                Log.e("ter",terms_en);
-            }else {
-                terms.setText(Html.fromHtml(terms_ar));
-
-            }
-        }catch (Exception e){
-            e.printStackTrace();
-        }
+//        try {
+//            if (Session.GetLang(BookAppointmentActivity.this).equals("en")) {
+//                terms.setText(Html.fromHtml(terms_en));
+//                Log.e("ter",terms_en);
+//            }else {
+//                terms.setText(Html.fromHtml(terms_ar));
+//
+//            }
+//        }catch (Exception e){
+//            e.printStackTrace();
+//        }
 
         st_bookapp.setText(Session.GetWord(this,"BOOK APPOINTMENT"));
         st_appointment.setText(Session.GetWord(this,"Book Appointments"));
@@ -200,209 +208,107 @@ public class BookAppointmentActivity extends Activity {
 
 
 
-        date.setOnClickListener(new View.OnClickListener() {
 
-            @RequiresApi(api = Build.VERSION_CODES.N)
-            @Override
-            public void onClick(View v) {
-                final Calendar mcurrentDate= Calendar.getInstance();
-                final int mYear = mcurrentDate.get(Calendar.YEAR);
-                final int mMonth = mcurrentDate.get(Calendar.MONTH);
-                final int mDay = mcurrentDate.get(Calendar.DAY_OF_MONTH);
 
-                DatePickerDialog mDatePicker=new DatePickerDialog(BookAppointmentActivity.this, new DatePickerDialog.OnDateSetListener() {
-                    public void onDateSet(DatePicker datepicker, int selectedyear, int selectedmonth, int selectedday) {
-                        String day,month;
-                        if (selectedday < 10 ){
-                            day = "0" + String.valueOf(selectedday);
-                        }else {
-                            day = String.valueOf(selectedday);
-                        }
 
-                        if (selectedmonth+1 < 10 ){
-                            month = "0" + String.valueOf(selectedmonth+1);
-                        }else {
-                            month = String.valueOf(selectedmonth+1);
-                        }
-                        date.setText(day +"-"+(month) +"-"+selectedyear);
-                        if (mDay == selectedday && mMonth == selectedmonth && mYear == selectedyear){
-                            CurentDate = true;
-                        }else {
-                            CurentDate = false;
-                        }
-                    }
-                },mYear, mMonth, mDay);
-                mDatePicker.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
-                mDatePicker.setTitle("Select date");
-                mDatePicker.show();  }
-        });
 
+
+        JsonParser jsonParser = new JsonParser();
+        if (!Session.GetSettings(BookAppointmentActivity.this).equals("-1")){
+            JsonObject jsonObject = (JsonObject) jsonParser.parse(Session.GetSettings(BookAppointmentActivity.this));
+            workingHours = jsonObject.get("timings").getAsString();
+            String[] timeSplit = workingHours.split("-");
+            String[] starttimespilt = timeSplit[0].split(":");
+            String[] endtimespilt = timeSplit[1].split(":");
+            hour = Integer.parseInt(starttimespilt[0]);
+             min = Integer.parseInt(starttimespilt[1]);
+             hours = Integer.parseInt(endtimespilt[0]);
+             mins = Integer.parseInt(endtimespilt[1]);
+            Log.e("timings",workingHours);
+
+        }
 
 
         time.setOnClickListener(new View.OnClickListener() {
-            @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onClick(View view) {
-                final Calendar mcurrentTime = Calendar.getInstance();
-                final int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
-                final int minute = mcurrentTime.get(Calendar.MINUTE);
-                TimePickerDialog mTimePicker;
-                mTimePicker = new TimePickerDialog(BookAppointmentActivity.this, new TimePickerDialog.OnTimeSetListener() {
-                    @Override
-                    public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
-                        boolean isPM = (selectedHour >= 12);
-                        if (CurentDate) {
-                            if ((hour <= selectedHour) &&
-                                    (minute <= selectedMinute)) {
-                                time.setText(String.format("%02d:%02d %s", (selectedHour == 12 || selectedHour == 0) ? 12 : selectedHour % 12, selectedMinute, isPM ? "PM" : "AM"));
-                            } else {
-                                Toast.makeText(BookAppointmentActivity.this, "Selected Wrong Time.",
-                                        Toast.LENGTH_SHORT).show();
-                            }
-                        }else {
-                            time.setText(String.format("%02d:%02d %s", (selectedHour == 12 || selectedHour == 0) ? 12 : selectedHour % 12, selectedMinute, isPM ? "PM" : "AM"));
-
-                        }
-                    }
-
-                }, hour, minute, true);//Yes 24 hour time
-
-
-                mTimePicker.setTitle("Select Time");
-                mTimePicker.show();
-
+                time_dialog();
             }
+
         });
+
+
+
+//        time.setOnClickListener(new View.OnClickListener() {
+//            @RequiresApi(api = Build.VERSION_CODES.N)
+//            @Override
+//            public void onClick(View view) {
+//                final Calendar mcurrentTime = Calendar.getInstance();
+//                final int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
+//                final int minute = mcurrentTime.get(Calendar.MINUTE);
+//                TimePickerDialog mTimePicker;
+//                mTimePicker = new TimePickerDialog(BookAppointmentActivity.this, new TimePickerDialog.OnTimeSetListener() {
+//                    @Override
+//                    public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
+//                        boolean isPM = (selectedHour >= 12);
+//                        if (CurentDate) {
+//                            if ((hour <= selectedHour) &&
+//                                    (minute <= selectedMinute)) {
+//                                time.setText(String.format("%02d:%02d %s", (selectedHour == 12 || selectedHour == 0) ? 12 : selectedHour % 12, selectedMinute, isPM ? "PM" : "AM"));
+//                            } else {
+//                                Toast.makeText(BookAppointmentActivity.this, "Selected Wrong Time.",
+//                                        Toast.LENGTH_SHORT).show();
+//                            }
+//                        }else {
+//                            time.setText(String.format("%02d:%02d %s", (selectedHour == 12 || selectedHour == 0) ? 12 : selectedHour % 12, selectedMinute, isPM ? "PM" : "AM"));
+//
+//                        }
+//                    }
+//
+//                }, hour, minute, true);//Yes 24 hour time
+//
+//
+//                mTimePicker.setTitle("Select Time");
+//                mTimePicker.show();
+//
+//            }
+//        });
 
         date_dropdown.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                final Calendar mcurrentDate= Calendar.getInstance();
-                final int mYear = mcurrentDate.get(Calendar.YEAR);
-                final int mMonth = mcurrentDate.get(Calendar.MONTH);
-                final int mDay = mcurrentDate.get(Calendar.DAY_OF_MONTH);
-
-                DatePickerDialog mDatePicker=new DatePickerDialog(BookAppointmentActivity.this, new DatePickerDialog.OnDateSetListener() {
-                    public void onDateSet(DatePicker datepicker, int selectedyear, int selectedmonth, int selectedday) {
-                        String day,month;
-                        if (selectedday < 10 ){
-                            day = "0" + String.valueOf(selectedday);
-                        }else {
-                            day = String.valueOf(selectedday);
-                        }
-
-                        if (selectedmonth+1 < 10 ){
-                            month = "0" + String.valueOf(selectedmonth+1);
-                        }else {
-                            month = String.valueOf(selectedmonth+1);
-                        }
-                        date.setText(day +"-"+(month) +"-"+selectedyear);
-                        if (mDay == selectedday && mMonth == selectedmonth && mYear == selectedyear){
-                            CurentDate = true;
-                        }else {
-                            CurentDate = false;
-                        }
-                    }
-                },mYear, mMonth, mDay);
-                mDatePicker.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
-                mDatePicker.setTitle("Select date");
-                mDatePicker.show();  }
+                date_dialog();
+                 }
         });
 
         date_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                final Calendar mcurrentDate= Calendar.getInstance();
-                final int mYear = mcurrentDate.get(Calendar.YEAR);
-                final int mMonth = mcurrentDate.get(Calendar.MONTH);
-                final int mDay = mcurrentDate.get(Calendar.DAY_OF_MONTH);
-
-                DatePickerDialog mDatePicker=new DatePickerDialog(BookAppointmentActivity.this, new DatePickerDialog.OnDateSetListener() {
-                    public void onDateSet(DatePicker datepicker, int selectedyear, int selectedmonth, int selectedday) {
-                        String day,month;
-                        if (selectedday < 10 ){
-                            day = "0" + String.valueOf(selectedday);
-                        }else {
-                            day = String.valueOf(selectedday);
-                        }
-
-                        if (selectedmonth+1 < 10 ){
-                            month = "0" + String.valueOf(selectedmonth+1);
-                        }else {
-                            month = String.valueOf(selectedmonth+1);
-                        }
-                        date.setText(day +"-"+(month) +"-"+selectedyear);
-                        if (mDay == selectedday && mMonth == selectedmonth && mYear == selectedyear){
-                            CurentDate = true;
-                        }else {
-                            CurentDate = false;
-                        }
-                    }
-                },mYear, mMonth, mDay);
-                mDatePicker.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
-                mDatePicker.setTitle("Select date");
-                mDatePicker.show();  }
+                date_dialog();
+            }
         });
+
+        date.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                date_dialog();
+            }
+        });
+
+
 
 
         time_dropdown.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                final Calendar mcurrentTime = Calendar.getInstance();
-                final int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
-                final int minute = mcurrentTime.get(Calendar.MINUTE);
-                TimePickerDialog mTimePicker;
-                mTimePicker = new TimePickerDialog(BookAppointmentActivity.this, new TimePickerDialog.OnTimeSetListener() {
-                    @Override
-                    public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
-                        boolean isPM = (selectedHour >= 12);
-                        if (CurentDate) {
-                            if ((hour <= selectedHour) &&
-                                    (minute <= selectedMinute)) {
-                                time.setText(String.format("%02d:%02d %s", (selectedHour == 12 || selectedHour == 0) ? 12 : selectedHour % 12, selectedMinute, isPM ? "PM" : "AM"));
-                            } else {
-                                Toast.makeText(BookAppointmentActivity.this, "Selected Wrong Time.",
-                                        Toast.LENGTH_SHORT).show();
-                            }
-                        }else {
-                            time.setText(String.format("%02d:%02d %s", (selectedHour == 12 || selectedHour == 0) ? 12 : selectedHour % 12, selectedMinute, isPM ? "PM" : "AM"));
-
-                        }
-                    }
-
-                }, hour, minute, true);//Yes 24 hour time
-                mTimePicker.setTitle("Select Time");
-                mTimePicker.show();
+              time_dialog();
             }
         });
 
         time_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Calendar mcurrentTime = Calendar.getInstance();
-                final int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
-                final int minute = mcurrentTime.get(Calendar.MINUTE);
-                TimePickerDialog mTimePicker;
-                mTimePicker = new TimePickerDialog(BookAppointmentActivity.this, new TimePickerDialog.OnTimeSetListener() {
-                    @Override
-                    public void onTimeSet(TimePicker timePicker, int selectedHour, int selectedMinute) {
-                        boolean isPM = (selectedHour >= 12);
-                        if (CurentDate) {
-                            if ((hour <= selectedHour) &&
-                                    (minute <= selectedMinute)) {
-                                time.setText(String.format("%02d:%02d %s", (selectedHour == 12 || selectedHour == 0) ? 12 : selectedHour % 12, selectedMinute, isPM ? "PM" : "AM"));
-                            } else {
-                                Toast.makeText(BookAppointmentActivity.this, "Selected Wrong Time.",
-                                        Toast.LENGTH_SHORT).show();
-                            }
-                        }else {
-                            time.setText(String.format("%02d:%02d %s", (selectedHour == 12 || selectedHour == 0) ? 12 : selectedHour % 12, selectedMinute, isPM ? "PM" : "AM"));
-                        }
-                    }
-
-                }, hour, minute, true);//Yes 24 hour time
-                mTimePicker.setTitle("Select Time");
-                mTimePicker.show();
+                time_dialog();
             }
         });
 
@@ -521,10 +427,106 @@ public class BookAppointmentActivity extends Activity {
             }
         });
 
+
+//        accept_btn.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                terms_popup.setVisibility(View.GONE);
+//                add_appointment();
+//            }
+//        });
+
+
         get_categories();
         get_members();
 
 
+    }
+
+
+    public void time_dialog(){
+        if (date.getText().toString().equals("")) {
+            Toast.makeText(BookAppointmentActivity.this, "Please Select Date First", Toast.LENGTH_SHORT).show();
+        } else {
+
+            ArrayList<Timepoint> timepoints = new ArrayList<>();
+
+            if (!CurentDate) {
+                Log.e("date", String.valueOf(CurentDate));
+                for (int i = hour; i < hours; i++) {
+
+                    for (int j = 0; j < 60; j++) {
+                        Timepoint timepoint = new Timepoint(i, j);
+                        timepoints.add(timepoint);
+
+                    }
+                }
+            } else {
+
+                Calendar mcurrentTime = Calendar.getInstance();
+                for (int i = mcurrentTime.get(Calendar.HOUR_OF_DAY); i < hours; i++) {
+
+                    for (int j = mcurrentTime.get(Calendar.MINUTE); j < 60; j++) {
+                        Timepoint timepoint = new Timepoint(i, j);
+                        timepoints.add(timepoint);
+
+                    }
+                }
+
+            }
+            com.wdullaer.materialdatetimepicker.time.TimePickerDialog mTimePicker;
+            if (timepoints != null && timepoints.size() > 0) {
+
+                int  hour = timepoints.get(0).getHour();
+                int minute = timepoints.get(0).getMinute();
+                mTimePicker = com.wdullaer.materialdatetimepicker.time.TimePickerDialog.newInstance((com.wdullaer.materialdatetimepicker.time.TimePickerDialog.OnTimeSetListener) BookAppointmentActivity.this, hour, minute, false
+                );
+                mTimePicker.setSelectableTimes(timepoints.toArray(new Timepoint[timepoints.size()]));
+                mTimePicker.setOnTimeSetListener(BookAppointmentActivity.this);
+                mTimePicker.show(getFragmentManager(), "TimePickerDialog");
+            }
+
+
+        }
+    }
+
+    public void date_dialog(){
+        final Calendar mcurrentDate= Calendar.getInstance();
+        final int mYear = mcurrentDate.get(Calendar.YEAR);
+        final int mMonth = mcurrentDate.get(Calendar.MONTH);
+        final int mDay = mcurrentDate.get(Calendar.DAY_OF_MONTH);
+
+        DatePickerDialog mDatePicker=new DatePickerDialog(BookAppointmentActivity.this, new DatePickerDialog.OnDateSetListener() {
+            public void onDateSet(DatePicker datepicker, int selectedyear, int selectedmonth, int selectedday) {
+                String day,month;
+                if (selectedday < 10 ){
+                    day = "0" + String.valueOf(selectedday);
+                }else {
+                    day = String.valueOf(selectedday);
+                }
+
+                if (selectedmonth+1 < 10 ){
+                    month = "0" + String.valueOf(selectedmonth+1);
+                }else {
+                    month = String.valueOf(selectedmonth+1);
+                }
+                date.setText(day +"-"+(month) +"-"+selectedyear);
+                Log.e(String .valueOf(mDay),String.valueOf(selectedday));
+                Log.e(String .valueOf(mMonth),String.valueOf(selectedmonth));
+                Log.e(String .valueOf(mYear),String.valueOf(selectedyear));
+
+                if (mDay == selectedday && mMonth == selectedmonth && mYear == selectedyear){
+                    CurentDate = true;
+                    Log.e("current_date", String.valueOf(CurentDate));
+                }else {
+                    CurentDate = false;
+                    Log.e("current_date", String.valueOf(CurentDate));
+                }
+            }
+        },mYear, mMonth, mDay);
+        mDatePicker.getDatePicker().setMinDate(System.currentTimeMillis() - 1000);
+        mDatePicker.setTitle("Select date");
+        mDatePicker.show();
     }
 
    
@@ -577,8 +579,6 @@ public class BookAppointmentActivity extends Activity {
         }else if (time_string.equals("")){
             Toast.makeText(BookAppointmentActivity.this,"Please Enter Time",Toast.LENGTH_SHORT).show();
             time.requestFocus();
-        }else if (!checked.isChecked()){
-            Toast.makeText(BookAppointmentActivity.this,"Please Accept Terms and Conditions",Toast.LENGTH_SHORT).show();
         }else  {
             show_progress();
             Ion.with(this)
@@ -593,18 +593,38 @@ public class BookAppointmentActivity extends Activity {
                     .asJsonObject()
                     .setCallback(new FutureCallback<JsonObject>() {
                         @Override
-                        public void onCompleted(Exception e, JsonObject result) {
+                        public void onCompleted(Exception e, final JsonObject result) {
                             hide_progress();
                             try {
-                                if (result.get("status").getAsString().equals("Success")) {
-                                    Toast.makeText(BookAppointmentActivity.this, result.get("message").getAsString(), Toast.LENGTH_SHORT).show();
-                                    Intent intent = new Intent(BookAppointmentActivity.this,MainActivity.class);
-                                    startActivity(intent);
-                                    finish();
-                                } else {
-                                    Toast.makeText(BookAppointmentActivity.this, result.get("message").getAsString(), Toast.LENGTH_SHORT).show();
+                                terms_popup.setVisibility(View.VISIBLE);
+                                Toast.makeText(BookAppointmentActivity.this,"Please Accept Terms and Conditions",Toast.LENGTH_SHORT).show();
+                                try {
+                                    if (Session.GetLang(BookAppointmentActivity.this).equals("en")) {
+                                        terms.setText(Html.fromHtml(terms_en));
+                                        Log.e("ter",terms_en);
+                                    }else {
+                                        terms.setText(Html.fromHtml(terms_ar));
 
+                                    }
+                                }catch (Exception e1){
+                                    e1.printStackTrace();
                                 }
+                                accept_btn.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        terms_popup.setVisibility(View.GONE);
+                                        if (result.get("status").getAsString().equals("Success")) {
+                                            Toast.makeText(BookAppointmentActivity.this, result.get("message").getAsString(), Toast.LENGTH_SHORT).show();
+                                            Intent intent = new Intent(BookAppointmentActivity.this,MainActivity.class);
+                                            startActivity(intent);
+                                            finish();
+                                        } else {
+                                            Toast.makeText(BookAppointmentActivity.this, result.get("message").getAsString(), Toast.LENGTH_SHORT).show();
+
+                                        }
+                                    }
+                                });
+
                             }catch (Exception e1){
                                 e1.printStackTrace();
                             }
@@ -744,5 +764,12 @@ public class BookAppointmentActivity extends Activity {
 
                     }
                 });
+    }
+
+    @Override
+    public void onTimeSet(com.wdullaer.materialdatetimepicker.time.TimePickerDialog view, int hourOfDay, int minute, int second) {
+        time.setText(String.format("%02d:%02d %s", (hourOfDay == 12 || hourOfDay == 0) ? 12 : hourOfDay % 12, minute, hourOfDay>12 ? "PM" : "AM"));
+
+
     }
 }

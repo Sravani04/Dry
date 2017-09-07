@@ -280,6 +280,7 @@ public class SignInActivity extends Activity {
         Toast.makeText(SignInActivity.this, "Updated Successfully", Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(SignInActivity.this,LoginActivity.class);
         startActivity(intent);
+        SignInActivity.this.onBackPressed();
     }
 
     private String getRealPathFromURI(Uri contentURI) {

@@ -86,6 +86,8 @@ public class ForgetPasswordActivity extends Activity {
                             try {
                                 if (result.get("status").getAsString().equals("Success")) {
                                     Toast.makeText(ForgetPasswordActivity.this, result.get("message").getAsString(), Toast.LENGTH_SHORT).show();
+                                    Intent intent = new Intent(ForgetPasswordActivity.this, LoginActivity.class);
+                                    startActivity(intent);
                                     finish();
                                 } else {
                                     Toast.makeText(ForgetPasswordActivity.this, result.get("message").getAsString(), Toast.LENGTH_SHORT).show();

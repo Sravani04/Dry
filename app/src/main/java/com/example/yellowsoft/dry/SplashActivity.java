@@ -21,8 +21,22 @@ public class SplashActivity extends Activity {
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.splash_activity);
-        get_words();
+        get_settings();
 
+    }
+
+    public void get_settings(){
+        Ion.with(this)
+                .load(Session.SERVER_URL+"settings.php")
+                .asJsonObject()
+                .setCallback(new FutureCallback<JsonObject>() {
+                    @Override
+                    public void onCompleted(Exception e, JsonObject result) {
+                        Log.e("settings",result.toString());
+                        Session.SetSettings(SplashActivity.this,result.toString());
+                        get_words();
+                    }
+                });
     }
 
     public void get_words(){
@@ -55,6 +69,9 @@ public class SplashActivity extends Activity {
                     }
                 });
     }
+
+
+
 
 
 

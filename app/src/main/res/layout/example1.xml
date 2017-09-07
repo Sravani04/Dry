@@ -48,10 +48,9 @@
         </LinearLayout>
 
         <com.nirhart.parallaxscroll.views.ParallaxScrollView
-            android:id="@+id/content"
+            android:id="@+id/main_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_above="@+id/footer"
             android:layout_below="@+id/header"
             android:fillViewport="false">
 
@@ -94,7 +93,7 @@
                 </RelativeLayout>
 
                 <LinearLayout
-                    android:id="@+id/content"
+                    android:id="@+id/body"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_alignParentBottom="false"
@@ -200,7 +199,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_alignParentBottom="false"
-                    android:layout_below="@+id/content"
+                    android:layout_below="@+id/main_layout"
                     android:layout_marginBottom="5dp"
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"

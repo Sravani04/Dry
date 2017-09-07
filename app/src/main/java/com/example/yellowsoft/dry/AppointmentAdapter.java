@@ -3,6 +3,7 @@ package com.example.yellowsoft.dry;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -70,6 +71,12 @@ public class AppointmentAdapter extends BaseAdapter {
         st_time.setText(Session.GetWord(context,"TIME"));
         st_id.setText(Session.GetWord(context,"Appointment Id"));
         st_status.setText(Session.GetWord(context,"Status"));
+
+        if (Session.GetLang(context).equals("ar")){
+            service_title.setGravity(Gravity.LEFT|Gravity.CENTER_VERTICAL);
+        }else {
+            service_title.setGravity(Gravity.END);
+        }
 
 
 

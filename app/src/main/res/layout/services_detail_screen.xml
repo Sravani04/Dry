@@ -48,10 +48,9 @@
         </LinearLayout>
 
         <com.nirhart.parallaxscroll.views.ParallaxScrollView
-            android:id="@+id/content"
+            android:id="@+id/body"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_above="@+id/footer"
             android:layout_below="@+id/header"
             android:fillViewport="false">
 
@@ -73,28 +72,40 @@
                         style="@style/MaterialAnimations.Icon.Big"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_above="@+id/topbar"
+                        android:layout_above="@+id/strip"
                         android:adjustViewBounds="true"
                         android:scaleType="centerCrop"
                         android:src="@drawable/banner"
                         android:transitionName="@string/transition_name_image" />
 
-                    <ImageView
-                        android:id="@+id/topbar"
+                    <LinearLayout
+                        android:id="@+id/strip"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentBottom="true"
-                        android:layout_alignParentEnd="false"
-                        android:layout_marginRight="40dp"
-                        android:adjustViewBounds="true"
-                        android:scaleType="fitXY"
-                        android:src="@drawable/strip_top" />
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:id="@+id/topbar"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentEnd="false"
+                            android:layout_weight="1"
+                            android:adjustViewBounds="true"
+                            android:scaleType="fitXY"
+                            android:src="@drawable/strip_top" />
+
+                        <LinearLayout
+                            android:layout_width="40dp"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical"></LinearLayout>
+                    </LinearLayout>
 
 
                 </RelativeLayout>
 
                 <LinearLayout
-                    android:id="@+id/content"
+                    android:id="@+id/main_layout"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_alignParentBottom="false"
@@ -129,7 +140,7 @@
                             android:orientation="horizontal">
 
                             <com.example.yellowsoft.dry.TextViewRegular
-                                android:id="@+id/textView1"
+                                android:id="@+id/st_price"
                                 android:layout_width="0dp"
                                 android:layout_height="match_parent"
                                 android:layout_weight="1"
@@ -139,7 +150,7 @@
                                 android:textColor="@color/textColor" />
 
                             <com.example.yellowsoft.dry.TextViewRegular
-                                android:id="@+id/textView"
+                                android:id="@+id/st_duration"
                                 android:layout_width="0dp"
                                 android:layout_height="match_parent"
                                 android:layout_weight="1"
@@ -200,20 +211,47 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_alignParentBottom="false"
-                    android:layout_below="@+id/content"
+                    android:layout_below="@+id/main_layout"
                     android:layout_marginBottom="5dp"
-                    android:layout_marginLeft="10dp"
-                    android:layout_marginRight="10dp"
                     android:layout_marginTop="5dp"
                     android:orientation="vertical">
 
-                    <ImageView
+                    <RelativeLayout
                         android:id="@+id/book_now"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:adjustViewBounds="true"
-                        android:scaleType="fitXY"
-                        android:src="@drawable/boo_servicebutton" />
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="4dp">
+
+                        <ImageView
+                            android:id="@+id/myImageView"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_centerHorizontal="true"
+                            android:adjustViewBounds="true"
+                            android:scaleType="fitXY"
+                            android:src="@drawable/service_button" />
+
+                        <com.example.yellowsoft.dry.TextViewRegular
+                            android:id="@+id/st_bookservice"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_centerInParent="true"
+                            android:gravity="center"
+                            android:text="BOOK SERVICE"
+                            android:textColor="#FFFFFF"
+                            android:textSize="14sp" />
+
+
+                    </RelativeLayout>
+
+                    <!--<ImageView-->
+                    <!--android:id="@+id/book_now"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:adjustViewBounds="true"-->
+                    <!--android:scaleType="fitXY"-->
+                    <!--android:src="@drawable/boo_servicebutton" />-->
                 </LinearLayout>
 
             </LinearLayout>
